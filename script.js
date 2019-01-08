@@ -1,24 +1,15 @@
 $(document).ready(initializeApp);
 
 var studentArray = []; 
-var ajaxConfig = {
-      data: {api_key:'LTCfS9b4jQ'},
-      dataType:'json',
-      method: 'POST',
-      url: 'https://s-apis.learningfuze.com/sgt/get',
-      success: getData
-};
-$.ajax(ajaxConfig);
+
 
 function initializeApp(){
       addClickHandlersToElements();
-      getData();
 }
 
 function addClickHandlersToElements(){
       $('#add-button').on('click', handleAddClicked);
       $('#cancel-button').on('click', handleCancelClick);
-      $('#get-data').on('click', getData)
 }
 
 function handleAddClicked(){
@@ -34,8 +25,7 @@ function addStudent(){
       var course = $('#course').val();
       var grade = $('#studentGrade').val();
       var student = {'name': name, 'course': course, 'grade': grade}
-      addStudentToDb(student);
-      student_array.push(student)
+      studentArray.push(student)
       updateStudentList(studentArray);
       clearAddStudentFormInputs();
 }
@@ -57,8 +47,6 @@ function renderStudentOnDom(studentObject) {
                   click: function() {
                      var deletePosition = studentArray.indexOf(studentObject);
                      studentArray.splice(deletePosition, 1);  
-                     delStudentDb(studentObject.id);
-                     console.log(studentArray); 
                      updateStudentList(studentArray);
                   }
             } 
@@ -95,61 +83,4 @@ function renderGradeAverage(number){
             return;
       }
       $('.avgGrade').text(number)
-}
-
-function getData(responseData) {
-      var ajaxConfig = {
-            data: {
-                  api_key:'LTCfS9b4jQ', 
-            },
-            dataType:'json',
-            method: 'POST',
-            url: 'http://s-apis.learningfuze.com/sgt/get',
-            success: function (responseData) {
-                  console.log(responseData);
-                  studentArray = responseData.data
-                  updateStudentList(studentArray);
-            },
-            error: function (responseData) {
-                  console.log('is there an error?', responseData)
-                  var errorMsg = $('.errorBody').text(responseData.statusText);
-                  $('#error').modal('show');
-            }
-      }
-      $.ajax(ajaxConfig);
-}
-
-function addStudentToDb(studentObj, responseData) {
-      var ajaxConfig = {
-            data: {
-                  api_key:'LTCfS9b4jQ',
-                  name: studentObj.name,
-                  course: studentObj.course,
-                  grade: studentObj.grade,
-            },
-            dataType:'json',
-            method: 'POST',
-            url: 'http://s-apis.learningfuze.com/sgt/create',
-            success: function (responseData) {
-                  console.log(responseData);
-            },
-            error: function (responseData) {
-                  console.log(responseData.statusText)
-                  var errorMsg = $('.errorBody').text(responseData.statusText);
-                  $('#error').modal('show');
-            }
-      }
-      $.ajax(ajaxConfig);
-}
-function delStudentDb(studentID, responseData) {
-      var ajaxConfig = {
-            data: {api_key:'LTCfS9b4jQ', student_id: studentID},
-            dataType:'json',
-            method: 'POST',
-            url: 'http://s-apis.learningfuze.com/sgt/delete',
-            success: function (responseData) {
-                  console.log(responseData);
-            }
-      }
-      $.ajax(ajaxConfig);
 }
