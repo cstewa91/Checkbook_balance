@@ -14,6 +14,7 @@ function initializeApp() {
 function addClickHandlersToElements() {
       $('#add-button').on('click', handleAddClicked);
       $('#cancel-button').on('click', handleCancelClick);
+      $("form").submit(preventFormSubmit)
 }
 
 function handleAddClicked() {
@@ -24,27 +25,56 @@ function handleCancelClick() {
       clearAddItemFormInputs();
 }
 
+function preventFormSubmit(event) {
+      event.preventDefault()
+}
+
 function addItem() {
       var name = $('#itemName').val();
+      var type = $('#itemType').val();
       var amount = parseFloat($('#amount').val());
+      var renderedAmount = formatAmount(amount, type)
       var date = $('#dueDate').val();
       var account = $('#account').val();
-      var formatAmount = "$" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
       var dueDate = new Date(date)
-      var dueDateMonth = dueDate.getMonth() + 1;
-      var dueDateDay = dueDate.getDate() + 1;
-      var dueDateYear = dueDate.getFullYear();
-      var dueDateString = dueDateMonth + '-' + dueDateDay + '-' + dueDateYear;
+      var newDate = dueDate.toLocaleDateString([], {
+            timeZone: 'UTC',
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric'
+      });
       var item = {
+            'type': type,
             'name': name,
-            'amount': formatAmount,
-            'dueDate': dueDateString,
+            'amount': amount,
+            'formatAmount': renderedAmount,
+            'dueDate': newDate,
             'account': account
       }
       itemsArray.push(item)
       updateItemList(itemsArray);
       clearAddItemFormInputs();
 }
+
+function formatAmount(amount, type) {
+      var formattedAmount = null;
+      if (isNaN(amount)) {
+            return;
+      } else {
+
+            if (type === 'Expense') {
+                  formattedAmount = "$ -" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            } else {
+                  formattedAmount = "$ +" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            }
+      }
+      return formattedAmount
+}
+
+function validateItem(item) {
+
+}
+
 
 function clearAddItemFormInputs() {
       $('#itemName').val('');
@@ -54,7 +84,7 @@ function clearAddItemFormInputs() {
 
 function renderStudentOnDom(itemObject) {
       var itemName = $('<td>').append(itemObject.name)
-      var itemAmount = $('<td>').append(itemObject.amount)
+      var itemAmount = $('<td>').append(itemObject.formatAmount)
       var itemDueDate = $('<td>').append(itemObject.dueDate)
       var itemAccount = $('<td>').append(itemObject.account)
       var deleteButton = $('<button>', {
@@ -87,22 +117,30 @@ function updateItemList(itemsArray) {
 function calculateExpenses(itemsArray) {
       var checkingExpense = 0;
       var savingExpense = 0;
+      var checkingIncome = 0;
+      var savingIncome = 0;
       for (var i = 0; i < itemsArray.length; i++) {
-            if (itemsArray[i].account === "Checkings") {
-                  var sliceCheckingAmount = itemsArray[i].amount.slice(1)
-                  checkingExpense += parseFloat(sliceCheckingAmount)
+            if (itemsArray[i].type === 'Expense') {
+                  if (itemsArray[i].account === "Checkings") {
+                        checkingExpense += itemsArray[i].amount
+                  } else {
+                        savingExpense += itemsArray[i].amount
+                  }
             } else {
-                  var sliceSavingAmount = itemsArray[i].amount.slice(1)
-                  savingExpense += parseFloat(sliceSavingAmount)
+                  if (itemsArray[i].account === "Checkings") {
+                        checkingIncome += itemsArray[i].amount
+                  } else {
+                        savingIncome += itemsArray[i].amount
+                  }
             }
       }
 
-      renderBalance(checkingExpense, savingExpense);
+      renderBalance(checkingExpense, savingExpense, checkingIncome, savingIncome);
 }
 
-function renderBalance(checkingExpense, savingExpense) {
-      var checkingBalance = parseFloat($('.checkings-balance').val()) - checkingExpense;
-      var savingBalance = parseFloat($('.savings-balance').val()) - savingExpense;
+function renderBalance(checkingExpense, savingExpense, checkingIncome, savingIncome) {
+      var checkingBalance = parseFloat($('.checkings-balance').val()) - checkingExpense + checkingIncome;
+      var savingBalance = parseFloat($('.savings-balance').val()) - savingExpense + savingIncome;
       $('.checkings-balance').text("$ " + checkingBalance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'))
       $('.savings-balance').text("$ " + savingBalance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'))
 }
