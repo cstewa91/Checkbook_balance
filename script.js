@@ -13,6 +13,7 @@ function initializeApp() {
 
 function addClickHandlersToElements() {
       $('#add-button').on('click', handleAddClicked);
+      // $('#add-button').on('click', formValidation);
       $('#cancel-button').on('click', handleCancelClick);
       $("form").submit(preventFormSubmit)
 }
@@ -51,9 +52,7 @@ function addItem() {
             'dueDate': newDate,
             'account': account
       }
-      itemsArray.push(item)
-      updateItemList(itemsArray);
-      clearAddItemFormInputs();
+      validateItem(item)
 }
 
 function formatAmount(amount, type) {
@@ -72,7 +71,43 @@ function formatAmount(amount, type) {
 }
 
 function validateItem(item) {
-
+      var date = parseInt(item.dueDate)
+      var allVaild = true
+      var formFields = [{
+                  name: item.name,
+                  select: 'name',
+                  regex: /\S/,
+                  error: 'Please enter an item'
+            },
+            {
+                  name: item.amount,
+                  select: 'amount',
+                  regex: /\d/,
+                  error: 'Please enter an amount'
+            },
+            {
+                  name: date,
+                  select: 'date',
+                  regex: /\d/,
+                  error: 'Please enter a date'
+            }
+      ]
+      for (var arrayIndex = 0; arrayIndex < formFields.length; arrayIndex++) {
+            var currentField = formFields[arrayIndex];
+            // $('#' + currentField.select + '-error').empty();
+            $('#' + currentField.select + '-error').removeClass('error-border');
+            if (!currentField.regex.test(currentField.name)) {
+                  $('#' + currentField.select + '-error').addClass('error-border');
+                  // $('#' + currentField.select + '-error').empty();
+                  // $('#' + currentField.select + '-error').append(currentField.error)
+                  allVaild = false;
+            }
+      }
+      if (allVaild) {
+            itemsArray.push(item)
+            updateItemList(itemsArray);
+            clearAddItemFormInputs();
+      }
 }
 
 
