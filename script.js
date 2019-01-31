@@ -62,9 +62,9 @@ function formatAmount(amount, type) {
       } else {
 
             if (type === 'Expense') {
-                  formattedAmount = "$ -" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                  formattedAmount = "-" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             } else {
-                  formattedAmount = "$ +" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                  formattedAmount = "+" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             }
       }
       return formattedAmount
