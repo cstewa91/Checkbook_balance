@@ -1,7 +1,33 @@
-.dollar-sign-padding {
-   padding: 6px 16px;
+.checking-margin {
+   margin-bottom: 15px;
 }
 
-.dollar-sign {
-   font-size: 16px;
+.account-container {
+   display: flex;
+   flex-flow: column;
+   align-items: flex-end;
 }
+
+.error-text {
+   color: red;
+   line-height: 0.5;
+}
+
+.error-border {
+   border: 2px solid red;
+   border-radius: 4px;
+
+}
+
+.error-border:focus {
+   border: 2px solid red;
+   border-radius: 4px;
+}
+
+.form-group {
+   margin-bottom: 11px;
+}
+
+
+
+@media only screen and (max-width : 399px) {}

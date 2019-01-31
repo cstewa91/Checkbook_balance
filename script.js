@@ -1,86 +1,181 @@
 $(document).ready(initializeApp);
 
-var studentArray = []; 
+var itemsArray = [];
 
 
-function initializeApp(){
+function initializeApp() {
       addClickHandlersToElements();
+      if (itemsArray.length === 0) {
+            $('.checkings-balance').val(0)
+            $('.savings-balance').val(0)
+      }
 }
 
-function addClickHandlersToElements(){
+function addClickHandlersToElements() {
       $('#add-button').on('click', handleAddClicked);
+      // $('#add-button').on('click', formValidation);
       $('#cancel-button').on('click', handleCancelClick);
+      $("form").submit(preventFormSubmit)
 }
 
-function handleAddClicked(){
-      addStudent();
+function handleAddClicked() {
+      addItem();
 }
 
-function handleCancelClick(){
-      clearAddStudentFormInputs();
+function handleCancelClick() {
+      clearAddItemFormInputs();
 }
 
-function addStudent(){
-      var name = $('#studentName').val();
-      var course = $('#course').val();
-      var grade = $('#studentGrade').val();
-      var student = {'name': name, 'course': course, 'grade': grade}
-      studentArray.push(student)
-      updateStudentList(studentArray);
-      clearAddStudentFormInputs();
+function preventFormSubmit(event) {
+      event.preventDefault()
 }
 
-function clearAddStudentFormInputs(){
-      $('#studentName').val('');
-      $('#course').val('');
-      $('#studentGrade').val('');
+function addItem() {
+      var name = $('#itemName').val();
+      var type = $('#itemType').val();
+      var amount = parseFloat($('#amount').val());
+      var renderedAmount = formatAmount(amount, type)
+      var date = $('#dueDate').val();
+      var account = $('#account').val();
+      var dueDate = new Date(date)
+      var newDate = dueDate.toLocaleDateString([], {
+            timeZone: 'UTC',
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric'
+      });
+      var item = {
+            'type': type,
+            'name': name,
+            'amount': amount,
+            'formatAmount': renderedAmount,
+            'dueDate': newDate,
+            'account': account
+      }
+      validateItem(item)
 }
 
-function renderStudentOnDom(studentObject) {
-      var studentName = $('<td>').append(studentObject.name)
-      var studentCourse = $('<td>').append(studentObject.course)
-      var studentGrade = $('<td>').append(studentObject.grade)
+function formatAmount(amount, type) {
+      var formattedAmount = null;
+      if (isNaN(amount)) {
+            return;
+      } else {
+
+            if (type === 'Expense') {
+                  formattedAmount = "$ -" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            } else {
+                  formattedAmount = "$ +" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            }
+      }
+      return formattedAmount
+}
+
+function validateItem(item) {
+      var date = parseInt(item.dueDate)
+      var allVaild = true
+      var formFields = [{
+                  name: item.name,
+                  select: 'name',
+                  regex: /\S/,
+                  error: 'Please enter an item'
+            },
+            {
+                  name: item.amount,
+                  select: 'amount',
+                  regex: /\d/,
+                  error: 'Please enter an amount'
+            },
+            {
+                  name: date,
+                  select: 'date',
+                  regex: /\d/,
+                  error: 'Please enter a date'
+            }
+      ]
+      for (var arrayIndex = 0; arrayIndex < formFields.length; arrayIndex++) {
+            var currentField = formFields[arrayIndex];
+            // $('#' + currentField.select + '-error').empty();
+            $('#' + currentField.select + '-error').removeClass('error-border');
+            if (!currentField.regex.test(currentField.name)) {
+                  $('#' + currentField.select + '-error').addClass('error-border');
+                  // $('#' + currentField.select + '-error').empty();
+                  // $('#' + currentField.select + '-error').append(currentField.error)
+                  allVaild = false;
+            }
+      }
+      if (allVaild) {
+            itemsArray.push(item)
+            updateItemList(itemsArray);
+            clearAddItemFormInputs();
+      }
+}
+
+
+function clearAddItemFormInputs() {
+      $('#itemName').val('');
+      $('#amount').val('');
+      $('#dueDate').val('');
+}
+
+function renderStudentOnDom(itemObject) {
+      var itemName = $('<td>').append(itemObject.name)
+      var itemAmount = $('<td>').append(itemObject.formatAmount)
+      var itemDueDate = $('<td>').append(itemObject.dueDate)
+      var itemAccount = $('<td>').append(itemObject.account)
       var deleteButton = $('<button>', {
-            text:'Delete', 
+            text: 'Delete',
             addClass: 'btn btn-danger btn-sm',
             on: {
-                  click: function() {
-                     var deletePosition = studentArray.indexOf(studentObject);
-                     studentArray.splice(deletePosition, 1);  
-                     updateStudentList(studentArray);
+                  click: function () {
+                        var deletePosition = itemsArray.indexOf(itemObject);
+                        itemsArray.splice(deletePosition, 1);
+                        updateItemList(itemsArray);
                   }
-            } 
+            }
       });
       var tdDeleteButton = $('<td>').append(deleteButton)
-      var combineStuff = $('<tr>').append(studentName, studentCourse, studentGrade, tdDeleteButton)
-      $('.tBody').append(combineStuff); 
+      var itemInput = $('<tr>').append(itemName, itemAmount, itemDueDate, itemAccount, tdDeleteButton)
+      $('.tBody').append(itemInput);
 }
 
 
-function updateStudentList(studentArray){
-      $('.tBody').empty(); 
-      for (var i=0; i < studentArray.length; i++) {
-            var studentObject = studentArray[i]
-            renderStudentOnDom(studentObject);
+function updateItemList(itemsArray) {
+      $('.tBody').empty();
+      for (var i = 0; i < itemsArray.length; i++) {
+            var itemObject = itemsArray[i]
+            renderStudentOnDom(itemObject);
       }
-      renderGradeAverage(calculateGradeAverage(studentArray));
+      calculateExpenses(itemsArray);
 
 }
 
-function calculateGradeAverage(studentArray){
-      var totalGrade = 0;
-      for (var i=0; i<studentArray.length; i++) {
-            totalGrade += parseFloat(studentArray[i].grade);
+function calculateExpenses(itemsArray) {
+      var checkingExpense = 0;
+      var savingExpense = 0;
+      var checkingIncome = 0;
+      var savingIncome = 0;
+      for (var i = 0; i < itemsArray.length; i++) {
+            if (itemsArray[i].type === 'Expense') {
+                  if (itemsArray[i].account === "Checkings") {
+                        checkingExpense += itemsArray[i].amount
+                  } else {
+                        savingExpense += itemsArray[i].amount
+                  }
+            } else {
+                  if (itemsArray[i].account === "Checkings") {
+                        checkingIncome += itemsArray[i].amount
+                  } else {
+                        savingIncome += itemsArray[i].amount
+                  }
+            }
       }
-      var averageGrade = (totalGrade/studentArray.length)
-      var fixedAvgGrade = parseInt(averageGrade) + '%'
-      return fixedAvgGrade;
+
+      renderBalance(checkingExpense, savingExpense, checkingIncome, savingIncome);
 }
 
-function renderGradeAverage(number){
-      if (studentArray.length <= 0) {
-            $('.avgGrade').text('0')
-            return;
-      }
-      $('.avgGrade').text(number)
+function renderBalance(checkingExpense, savingExpense, checkingIncome, savingIncome) {
+      var checkingBalance = parseFloat($('.checkings-balance').val()) - checkingExpense + checkingIncome;
+      var savingBalance = parseFloat($('.savings-balance').val()) - savingExpense + savingIncome;
+      $('.checkings-balance').text("$ " + checkingBalance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'))
+      $('.savings-balance').text("$ " + savingBalance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'))
 }
