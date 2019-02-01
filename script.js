@@ -13,9 +13,11 @@ function initializeApp() {
 
 function addClickHandlersToElements() {
       $('#add-button').on('click', handleAddClicked);
-      // $('#add-button').on('click', formValidation);
       $('#cancel-button').on('click', handleCancelClick);
       $("form").submit(preventFormSubmit)
+      $('#itemType').on('click', switchForm)
+      $('#accountFrom').on('click', switchAccount)
+      $('#accountTo').on('click', switchAccount)
 }
 
 function handleAddClicked() {
@@ -30,26 +32,83 @@ function preventFormSubmit(event) {
       event.preventDefault()
 }
 
+function switchForm() {
+      if ($('#itemType').val() === "Expense") {
+            $('#expense-header').removeClass('hide-input')
+            $('#income-header').addClass('hide-input')
+            $('#transfer-header').addClass('hide-input')
+            $('#add-item-inputs').removeClass('hide-input');
+            $('#transfer-inputs').addClass('hide-input');
+      } else if ($('#itemType').val() === "Income") {
+            $('#expense-header').addClass('hide-input')
+            $('#income-header').removeClass('hide-input')
+            $('#transfer-header').addClass('hide-input')
+            $('#add-item-inputs').removeClass('hide-input');
+            $('#transfer-inputs').addClass('hide-input');
+      } else {
+            $('#expense-header').addClass('hide-input')
+            $('#income-header').addClass('hide-input')
+            $('#transfer-header').removeClass('hide-input')
+            $('#add-item-inputs').addClass('hide-input');
+            $('#transfer-inputs').removeClass('hide-input');
+      }
+}
+
+function switchAccount() {
+      if ($('#accountFrom').val() === "Checking") {
+            $('#fromChecking').attr('Selected', 'selected')
+            $('#toSaving').attr('Selected', 'selected')
+            $('#fromSaving').removeAttr('Selected', 'selected')
+            $('#toChecking').removeAttr('Selected', 'selected')
+      } else {
+            $('#fromSaving').attr('Selected', 'selected')
+            $('#toChecking').attr('Selected', 'selected')
+            $('#fromChecking').removeAttr('Selected', 'selected')
+            $('#toSaving').removeAttr('Selected', 'selected')
+      }
+}
+
 function addItem() {
+      if ($('#itemType').val() !== "Transfer") {
+            addExpenseorIncome();
+      } else {
+            transferMoney();
+      }
+}
+
+function transferMoney() {
+      var type = $('#itemType').val();
+      var transferFrom = $('#accountFrom').val();
+      var transferTo = $('#accountTo').val();
+      var transferAmount = parseFloat($('#transferAmount').val());
+      var renderedAmount = formatAmount(transferAmount, type)
+      var transferDate = $('#transferDate').val();
+      var newDate = formatDate(transferDate)
+      var transfer = {
+            'type': type,
+            'from': transferFrom,
+            'to': transferTo,
+            'amount': transferAmount,
+            'formatAmount': renderedAmount,
+            'date': newDate
+      }
+      validateItem(transfer)
+}
+
+function addExpenseorIncome() {
       var name = $('#itemName').val();
       var type = $('#itemType').val();
-      var amount = parseFloat($('#amount').val());
-      var renderedAmount = formatAmount(amount, type)
-      var date = $('#dueDate').val();
+      var itemAmount = parseFloat($('#itemAmount').val());
+      var renderedAmount = formatAmount(itemAmount, type)
+      var itemDate = $('#itemDate').val();
+      var newDate = formatDate(itemDate)
       var account = $('#account').val();
-      var dueDate = new Date(date)
-      var newDate = dueDate.toLocaleDateString([], {
-            timeZone: 'UTC',
-            month: '2-digit',
-            day: '2-digit',
-            year: 'numeric'
-      });
       var item = {
             'type': type,
             'name': name,
-            'amount': amount,
+            'amount': itemAmount,
             'formatAmount': renderedAmount,
-            'dueDate': newDate,
+            'date': newDate,
             'account': account
       }
       validateItem(item)
@@ -63,44 +122,79 @@ function formatAmount(amount, type) {
 
             if (type === 'Expense') {
                   formattedAmount = "-" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-            } else {
+            } else if (type === 'Income') {
                   formattedAmount = "+" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            } else {
+                  formattedAmount = "-" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
             }
       }
       return formattedAmount
 }
 
+function formatDate(date) {
+      var dueDate = new Date(date)
+      var newDate = dueDate.toLocaleDateString([], {
+            timeZone: 'UTC',
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric'
+      });
+      return newDate;
+}
+
 function validateItem(item) {
-      var date = parseInt(item.dueDate)
+      var date = parseInt(item.date)
       var allVaild = true
-      var formFields = [{
-                  name: item.name,
-                  select: 'name',
-                  regex: /\S/,
-                  error: 'Please enter an item'
-            },
-            {
-                  name: item.amount,
-                  select: 'amount',
-                  regex: /\d/,
-                  error: 'Please enter an amount'
-            },
-            {
-                  name: date,
-                  select: 'date',
-                  regex: /\d/,
-                  error: 'Please enter a date'
+      console.log(item)
+      if (item.type !== 'Transfer') {
+            var formFields = [{
+                        name: item.name,
+                        select: 'name',
+                        regex: /\S/,
+                        error: 'Please enter an item'
+                  },
+                  {
+                        name: item.amount,
+                        select: 'amount',
+                        regex: /\d/,
+                        error: 'Please enter an amount'
+                  },
+                  {
+                        name: date,
+                        select: 'date',
+                        regex: /\d/,
+                        error: 'Please enter a date'
+                  }
+            ]
+            for (var arrayIndex = 0; arrayIndex < formFields.length; arrayIndex++) {
+                  var currentField = formFields[arrayIndex];
+                  $('#' + currentField.select + '-error').removeClass('error-border');
+                  if (!currentField.regex.test(currentField.name)) {
+                        $('#' + currentField.select + '-error').addClass('error-border');
+                        allVaild = false;
+                  }
             }
-      ]
-      for (var arrayIndex = 0; arrayIndex < formFields.length; arrayIndex++) {
-            var currentField = formFields[arrayIndex];
-            // $('#' + currentField.select + '-error').empty();
-            $('#' + currentField.select + '-error').removeClass('error-border');
-            if (!currentField.regex.test(currentField.name)) {
-                  $('#' + currentField.select + '-error').addClass('error-border');
-                  // $('#' + currentField.select + '-error').empty();
-                  // $('#' + currentField.select + '-error').append(currentField.error)
-                  allVaild = false;
+      } else {
+            var formFields = [{
+                        name: item.amount,
+                        select: 'amount',
+                        regex: /\d/,
+                        error: 'Please enter an amount'
+                  },
+                  {
+                        name: date,
+                        select: 'date',
+                        regex: /\d/,
+                        error: 'Please enter a date'
+                  }
+            ]
+            for (var arrayIndex = 0; arrayIndex < formFields.length; arrayIndex++) {
+                  var currentField = formFields[arrayIndex];
+                  $('#transfer-' + currentField.select + '-error').removeClass('error-border');
+                  if (!currentField.regex.test(currentField.name)) {
+                        $('#transfer-' + currentField.select + '-error').addClass('error-border');
+                        allVaild = false;
+                  }
             }
       }
       if (allVaild) {
@@ -113,29 +207,52 @@ function validateItem(item) {
 
 function clearAddItemFormInputs() {
       $('#itemName').val('');
-      $('#amount').val('');
-      $('#dueDate').val('');
+      $('#itemAmount').val('');
+      $('#itemDate').val('');
+      $('#transferAmount').val('');
+      $('#transferDate').val('');
 }
 
-function renderStudentOnDom(itemObject) {
-      var itemName = $('<td>').append(itemObject.name)
-      var itemAmount = $('<td>').append(itemObject.formatAmount)
-      var itemDueDate = $('<td>').append(itemObject.dueDate)
-      var itemAccount = $('<td>').append(itemObject.account)
-      var deleteButton = $('<button>', {
-            text: 'Delete',
-            addClass: 'btn btn-danger btn-sm',
-            on: {
-                  click: function () {
-                        var deletePosition = itemsArray.indexOf(itemObject);
-                        itemsArray.splice(deletePosition, 1);
-                        updateItemList(itemsArray);
+function renderItemOnDom(itemObject) {
+      if (itemObject.type !== 'Transfer') {
+            var itemName = $('<td>').append(itemObject.name).addClass('item-width')
+            var itemAmount = $('<td>').append(itemObject.formatAmount)
+            var itemDate = $('<td>').append(itemObject.date)
+            var itemAccount = $('<td>').append(itemObject.account)
+            var deleteButton = $('<button>', {
+                  text: 'Delete',
+                  addClass: 'btn btn-danger btn-sm',
+                  on: {
+                        click: function () {
+                              var deletePosition = itemsArray.indexOf(itemObject);
+                              itemsArray.splice(deletePosition, 1);
+                              updateItemList(itemsArray);
+                        }
                   }
-            }
-      });
-      var tdDeleteButton = $('<td>').append(deleteButton)
-      var itemInput = $('<tr>').append(itemName, itemAmount, itemDueDate, itemAccount, tdDeleteButton)
-      $('.tBody').append(itemInput);
+            });
+            var tdDeleteButton = $('<td>').append(deleteButton)
+            var itemInput = $('<tr>').append(itemName, itemAmount, itemDate, itemAccount, tdDeleteButton)
+            $('.tBody').append(itemInput);
+      } else {
+            var itemName = $('<td>').append(itemObject.type + " to " + itemObject.to).addClass('item-width')
+            var itemAmount = $('<td>').append(itemObject.formatAmount)
+            var itemDate = $('<td>').append(itemObject.date)
+            var itemAccount = $('<td>').append(itemObject.from)
+            var deleteButton = $('<button>', {
+                  text: 'Delete',
+                  addClass: 'btn btn-danger btn-sm',
+                  on: {
+                        click: function () {
+                              var deletePosition = itemsArray.indexOf(itemObject);
+                              itemsArray.splice(deletePosition, 1);
+                              updateItemList(itemsArray);
+                        }
+                  }
+            });
+            var tdDeleteButton = $('<td>').append(deleteButton)
+            var itemInput = $('<tr>').append(itemName, itemAmount, itemDate, itemAccount, tdDeleteButton)
+            $('.tBody').append(itemInput);
+      }
 }
 
 
@@ -143,7 +260,7 @@ function updateItemList(itemsArray) {
       $('.tBody').empty();
       for (var i = 0; i < itemsArray.length; i++) {
             var itemObject = itemsArray[i]
-            renderStudentOnDom(itemObject);
+            renderItemOnDom(itemObject);
       }
       calculateExpenses(itemsArray);
 
@@ -161,11 +278,19 @@ function calculateExpenses(itemsArray) {
                   } else {
                         savingExpense += itemsArray[i].amount
                   }
-            } else {
+            } else if(itemsArray[i].type === 'Income'){
                   if (itemsArray[i].account === "Checkings") {
                         checkingIncome += itemsArray[i].amount
                   } else {
                         savingIncome += itemsArray[i].amount
+                  }
+            } else {
+                  if(itemsArray[i].from === "Checking") {
+                        checkingIncome -= itemsArray[i].amount;
+                        savingIncome += itemsArray[i].amount
+                  } else {
+                        checkingIncome += itemsArray[i].amount;
+                        savingIncome -= itemsArray[i].amount
                   }
             }
       }
