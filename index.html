@@ -16,7 +16,7 @@
             <h1 class='visible-sm visible-md visible-lg'>
                 <medium class='pull-left'>My Checkbook</medium>
                 <div class='account-container'>
-                    <small class='checking-margin'>Checkings : <span class="checkings-balance label label-default">$
+                    <small class='checking-margin'>Checking : <span class="checkings-balance label label-default">$
                             0.00</span></small>
                     <small>Savings : <span class="savings-balance label label-default">$ 0.00</span></small>
                 </div>
@@ -31,7 +31,9 @@
             </h3>
         </div>
         <div class="student-add-form col-sm-3 col-sm-push-9 clearfix">
-            <h4>Add Income or Expense</h4>
+            <h4 id="expense-header">Add Expense</h4>
+            <h4 id="income-header" class="hide-input">Add Income</h4>
+            <h4 id="transfer-header" class="hide-input">Transfer Money</h4>
             <form id="itemForm">
                 <div class="form-group input-group">
                     <span class="input-group-addon">
@@ -40,38 +42,71 @@
                     <select class="form-control" id="itemType">
                         <option>Expense</option>
                         <option>Income</option>
+                        <option>Transfer</option>
                     </select>
                 </div>
-                <div id="name-error" class="form-group input-group">
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-shopping-cart"></span>
-                    </span>
-                    <input type="text" class="form-control" name="itemName" id="itemName" placeholder="Item">
+                <div id="add-item-inputs">
+                    <div id="name-error" class="form-group input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-shopping-cart"></span>
+                        </span>
+                        <input type="text" class="form-control" name="itemName" id="itemName" placeholder="Item" maxlength="50">
+                    </div>
+                    <div id="amount-error" class="form-group input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-usd"></span>
+                        </span>
+                        <input type="number" min="0.01" step="0.01" class="form-control" name="amount" id="itemAmount" max="100000.00"
+                            placeholder="Amount">
+                    </div>
+                    <div id="date-error" class="form-group input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                        <input type="date" class="form-control" name="dueDate" id="itemDate">
+                    </div>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-credit-card"></span>
+                        </span>
+                        <select class="form-control" id="account">
+                            <option>Checkings</option>
+                            <option>Savings</option>
+                        </select>
+                    </div>
                 </div>
-                <!-- <p id="name-error" class="error-text"></p> -->
-                <div id="amount-error" class="form-group input-group">
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-usd"></span>
-                    </span>
-                    <input type="number" min="0.01" step="0.01" class="form-control" name="amount" id="amount"
-                        placeholder="Amount">
-                </div>
-                <!-- <p id="amount-error" class="error-text"></p> -->
-                <div id="date-error" class="form-group input-group">
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                    <input type="date" class="form-control" name="dueDate" id="dueDate">
-                </div>
-                <!-- <p id="date-error" class="error-text"></p> -->
-                <div class="form-group input-group">
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-credit-card"></span>
-                    </span>
-                    <select class="form-control" id="account">
-                        <option>Checkings</option>
-                        <option>Savings</option>
-                    </select>
+                <div id="transfer-inputs" class="hide-input">
+                    <div class="form-group input-group">
+                        <span class="input-group-addon less-padding">
+                            From
+                        </span>
+                        <select class="form-control" id="accountFrom">
+                            <option selected="selected" id="fromChecking">Checking</option>
+                            <option id="fromSaving">Savings</option>
+                        </select>
+                    </div>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon">
+                            To
+                        </span>
+                        <select class="form-control" id="accountTo">
+                            <option id="toChecking">Checking</option>
+                            <option selected="selected" id="toSaving">Savings</option>
+                        </select>
+                    </div>
+                    <div id="transfer-amount-error" class="form-group input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-usd"></span>
+                        </span>
+                        <input type="number" min="0.01" step="0.01" class="form-control" name="amount" id="transferAmount"
+                            placeholder="Amount">
+                    </div>
+                    <div id="transfer-date-error" class="form-group input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                        <input type="date" class="form-control" name="dueDate" id="transferDate">
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-success clearfix" id='add-button' onclick="">Add</button>
                 <button type="button" class="btn btn-default" id='cancel-button' onclick="">Cancel</button>

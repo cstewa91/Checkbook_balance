@@ -28,6 +28,17 @@
    margin-bottom: 11px;
 }
 
+.hide-input {
+   display: none;
+}
 
+.less-padding {
+   padding: 8px 3px
+}
 
-@media only screen and (max-width : 399px) {}
+.item-width {
+   max-width: 5vw;
+   white-space: nowrap; 
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
