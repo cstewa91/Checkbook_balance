@@ -36,9 +36,15 @@
    padding: 8px 3px
 }
 
-.item-width {
-   max-width: 5vw;
-   white-space: nowrap; 
-   overflow: hidden;
-   text-overflow: ellipsis;
+.rotate-arrow {
+   transform: rotate(180deg);
+   transition: transform .3s ease-in-out;
+}
+
+.glyphicon-menu-down {
+   transition: transform .3s ease-in-out;
+}
+
+#dateCol {
+   cursor: pointer;
 }

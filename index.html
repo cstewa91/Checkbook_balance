@@ -34,7 +34,7 @@
             <h4 id="expense-header">Add Expense</h4>
             <h4 id="income-header" class="hide-input">Add Income</h4>
             <h4 id="transfer-header" class="hide-input">Transfer Money</h4>
-            <form id="itemForm">
+            <form id="itemForm" novalidate>
                 <div class="form-group input-group">
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-piggy-bank"></span>
@@ -50,13 +50,14 @@
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-shopping-cart"></span>
                         </span>
-                        <input type="text" class="form-control" name="itemName" id="itemName" placeholder="Item" maxlength="50">
+                        <input type="text" class="form-control" name="itemName" id="itemName" placeholder="Item"
+                            maxlength="25">
                     </div>
                     <div id="amount-error" class="form-group input-group">
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-usd"></span>
                         </span>
-                        <input type="number" min="0.01" step="0.01" class="form-control" name="amount" id="itemAmount" max="100000.00"
+                        <input type="number" min="0.01" step="0.01" class="form-control" name="amount" id="itemAmount"
                             placeholder="Amount">
                     </div>
                     <div id="date-error" class="form-group input-group">
@@ -119,7 +120,7 @@
                     <tr>
                         <th>Item</th>
                         <th>Amount</th>
-                        <th>Date</th>
+                        <th id="dateCol">Date <span id="ascendingArrow" class="glyphicon glyphicon-menu-down"></span></th>
                         <th>Account</th>
                         <th>Delete</th>
                     </tr>
