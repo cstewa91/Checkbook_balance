@@ -1,7 +1,7 @@
 $(document).ready(initializeApp);
 
 var itemsArray = [];
-
+var dateAscending = true;
 
 function initializeApp() {
       addClickHandlersToElements();
@@ -18,6 +18,7 @@ function addClickHandlersToElements() {
       $('#itemType').on('click', switchForm)
       $('#accountFrom').on('click', switchAccount)
       $('#accountTo').on('click', switchAccount)
+      $('#dateCol').on('click', changeDate)
 }
 
 function handleAddClicked() {
@@ -90,7 +91,7 @@ function transferMoney() {
             'to': transferTo,
             'amount': transferAmount,
             'formatAmount': renderedAmount,
-            'date': newDate
+            'date': newDate,
       }
       validateItem(transfer)
 }
@@ -109,7 +110,7 @@ function addExpenseorIncome() {
             'amount': itemAmount,
             'formatAmount': renderedAmount,
             'date': newDate,
-            'account': account
+            'account': account,
       }
       validateItem(item)
 }
@@ -215,7 +216,7 @@ function clearAddItemFormInputs() {
 
 function renderItemOnDom(itemObject) {
       if (itemObject.type !== 'Transfer') {
-            var itemName = $('<td>').append(itemObject.name).addClass('item-width')
+            var itemName = $('<td>').append(itemObject.name)
             var itemAmount = $('<td>').append(itemObject.formatAmount)
             var itemDate = $('<td>').append(itemObject.date)
             var itemAccount = $('<td>').append(itemObject.account)
@@ -234,7 +235,7 @@ function renderItemOnDom(itemObject) {
             var itemInput = $('<tr>').append(itemName, itemAmount, itemDate, itemAccount, tdDeleteButton)
             $('.tBody').append(itemInput);
       } else {
-            var itemName = $('<td>').append(itemObject.type + " to " + itemObject.to).addClass('item-width')
+            var itemName = $('<td>').append(itemObject.type + " to " + itemObject.to)
             var itemAmount = $('<td>').append(itemObject.formatAmount)
             var itemDate = $('<td>').append(itemObject.date)
             var itemAccount = $('<td>').append(itemObject.from)
@@ -257,13 +258,8 @@ function renderItemOnDom(itemObject) {
 
 
 function updateItemList(itemsArray) {
-      $('.tBody').empty();
-      for (var i = 0; i < itemsArray.length; i++) {
-            var itemObject = itemsArray[i]
-            renderItemOnDom(itemObject);
-      }
+      orderByDate(itemsArray)
       calculateExpenses(itemsArray);
-
 }
 
 function calculateExpenses(itemsArray) {
@@ -278,14 +274,14 @@ function calculateExpenses(itemsArray) {
                   } else {
                         savingExpense += itemsArray[i].amount
                   }
-            } else if(itemsArray[i].type === 'Income'){
+            } else if (itemsArray[i].type === 'Income') {
                   if (itemsArray[i].account === "Checkings") {
                         checkingIncome += itemsArray[i].amount
                   } else {
                         savingIncome += itemsArray[i].amount
                   }
             } else {
-                  if(itemsArray[i].from === "Checking") {
+                  if (itemsArray[i].from === "Checking") {
                         checkingIncome -= itemsArray[i].amount;
                         savingIncome += itemsArray[i].amount
                   } else {
@@ -303,4 +299,39 @@ function renderBalance(checkingExpense, savingExpense, checkingIncome, savingInc
       var savingBalance = parseFloat($('.savings-balance').val()) - savingExpense + savingIncome;
       $('.checkings-balance').text("$ " + checkingBalance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'))
       $('.savings-balance').text("$ " + savingBalance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'))
+}
+
+function orderByDate(itemsArray) {
+      $('.tBody').empty();
+      if (dateAscending === true) {
+            itemsArray.sort(function (a, b) {
+                  var dateA = new Date(a.date)
+                  var dateB = new Date(b.date)
+                  return dateA - dateB
+            });
+            console.log(itemsArray)
+      } else {
+            itemsArray.sort(function (a, b) {
+                  var dateA = new Date(a.date)
+                  var dateB = new Date(b.date)
+                  return dateB - dateA
+            });
+            console.log(itemsArray)
+      }
+      for (var i = 0; i < itemsArray.length; i++) {
+            var itemObject = itemsArray[i]
+            renderItemOnDom(itemObject);
+      }
+}
+
+function changeDate() {
+      var ascending = $('#ascendingArrow')
+      if (dateAscending === true) {
+            dateAscending = false
+            ascending.addClass('rotate-arrow')
+      } else {
+            dateAscending = true
+            ascending.removeClass('rotate-arrow')
+      }
+      orderByDate(itemsArray);
 }
