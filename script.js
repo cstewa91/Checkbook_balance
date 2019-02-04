@@ -15,7 +15,7 @@ function addClickHandlersToElements() {
       $('#add-button').on('click', handleAddClicked);
       $('#cancel-button').on('click', handleCancelClick);
       $("form").submit(preventFormSubmit)
-      $(document).on('change touchstart', '#itemType', switchForm)
+      $('#itemType').on('change', switchForm)
       $('#accountFrom').on('click', switchAccount)
       $('#accountTo').on('click', switchAccount)
       $('#dateCol').on('click', changeDate)
@@ -34,13 +34,13 @@ function preventFormSubmit(event) {
 }
 
 function switchForm() {
-      if ($(this).find("option:selected").val() === "Expense") {
+      if ($('#itemType').val() === "Expense") {
             $('#expense-header').removeClass('hide-input')
             $('#income-header').addClass('hide-input')
             $('#transfer-header').addClass('hide-input')
             $('#add-item-inputs').removeClass('hide-input');
             $('#transfer-inputs').addClass('hide-input');
-      } else if ($(this).find("option:selected").val() === "Income") {
+      } else if ($('#itemType').val() === "Income") {
             $('#expense-header').addClass('hide-input')
             $('#income-header').removeClass('hide-input')
             $('#transfer-header').addClass('hide-input')
