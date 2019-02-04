@@ -15,10 +15,13 @@ function addClickHandlersToElements() {
       $('#add-button').on('click', handleAddClicked);
       $('#cancel-button').on('click', handleCancelClick);
       $("form").submit(preventFormSubmit)
-      $('#itemType').on('change option', switchForm)
-      $('#accountFrom').on('click', switchAccount)
-      $('#accountTo').on('click', switchAccount)
-      $('#dateCol').on('click', changeDate)
+      // $('#itemType').on('change option', switchForm)
+      $('#accountFrom').on('click', switchAccount);
+      $('#accountTo').on('click', switchAccount);
+      $('#dateCol').on('click', changeDate);
+      $('#itemType').change(switchForm);
+      $('#itemType').focus(switchForm);
+      $('#itemType').hover(switchForm);
 }
 
 function handleAddClicked() {
