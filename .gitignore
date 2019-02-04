@@ -2,3 +2,4 @@
 .idea
 README.md
 node_modules
+mysql_connect.php
