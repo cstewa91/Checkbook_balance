@@ -34,13 +34,13 @@ function preventFormSubmit(event) {
 }
 
 function switchForm() {
-      if ($('#itemType').val() === "Expense") {
+      if ($(this).find("option:selected").val() === "Expense") {
             $('#expense-header').removeClass('hide-input')
             $('#income-header').addClass('hide-input')
             $('#transfer-header').addClass('hide-input')
             $('#add-item-inputs').removeClass('hide-input');
             $('#transfer-inputs').addClass('hide-input');
-      } else if ($('#itemType').val() === "Income") {
+      } else if ($(this).find("option:selected").val() === "Income") {
             $('#expense-header').addClass('hide-input')
             $('#income-header').removeClass('hide-input')
             $('#transfer-header').addClass('hide-input')
@@ -53,6 +53,7 @@ function switchForm() {
             $('#add-item-inputs').addClass('hide-input');
             $('#transfer-inputs').removeClass('hide-input');
       }
+      console.log($(this).find("option:selected").text())
 }
 
 function switchAccount() {
