@@ -15,7 +15,7 @@ function addClickHandlersToElements() {
       $('#add-button').on('click', handleAddClicked);
       $('#cancel-button').on('click', handleCancelClick);
       $("form").submit(preventFormSubmit)
-      $('#itemType').on('change', switchForm)
+      $('#itemType').on('click touchstart', switchForm)
       $('#accountFrom').on('click', switchAccount)
       $('#accountTo').on('click', switchAccount)
       $('#dateCol').on('click', changeDate)
@@ -34,13 +34,13 @@ function preventFormSubmit(event) {
 }
 
 function switchForm() {
-      if ($(this).find("option:selected").text() === "Expense") {
+      if ($(this).find("option:selected").val() === "Expense") {
             $('#expense-header').removeClass('hide-input')
             $('#income-header').addClass('hide-input')
             $('#transfer-header').addClass('hide-input')
             $('#add-item-inputs').removeClass('hide-input');
             $('#transfer-inputs').addClass('hide-input');
-      } else if ($(this).find("option:selected").text() === "Income") {
+      } else if ($(this).find("option:selected").val() === "Income") {
             $('#expense-header').addClass('hide-input')
             $('#income-header').removeClass('hide-input')
             $('#transfer-header').addClass('hide-input')
@@ -53,7 +53,6 @@ function switchForm() {
             $('#add-item-inputs').addClass('hide-input');
             $('#transfer-inputs').removeClass('hide-input');
       }
-      console.log($(this).find("option:selected").text())
 }
 
 function switchAccount() {
