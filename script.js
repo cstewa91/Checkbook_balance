@@ -34,13 +34,13 @@ function preventFormSubmit(event) {
 }
 
 function switchForm() {
-      if ($(this).find("option:selected").val() === "Expense") {
+      if ($(this).find("option:selected").text() === "Expense") {
             $('#expense-header').removeClass('hide-input')
             $('#income-header').addClass('hide-input')
             $('#transfer-header').addClass('hide-input')
             $('#add-item-inputs').removeClass('hide-input');
             $('#transfer-inputs').addClass('hide-input');
-      } else if ($(this).find("option:selected").val() === "Income") {
+      } else if ($(this).find("option:selected").text() === "Income") {
             $('#expense-header').addClass('hide-input')
             $('#income-header').removeClass('hide-input')
             $('#transfer-header').addClass('hide-input')
