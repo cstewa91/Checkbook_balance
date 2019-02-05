@@ -2,23 +2,26 @@ $(document).ready(initializeApp);
 
 var itemsArray = [];
 var dateAscending = true;
+var checkingBalance = 0;
+var savingBalance = 0;
 
 function initializeApp() {
    addClickHandlersToElements();
    if (itemsArray.length === 0) {
-      $('.checkings-balance').val(0)
+      $('.checking-balance').val(0)
       $('.savings-balance').val(0)
    }
 }
 
 function addClickHandlersToElements() {
-      $('#add-button').on('click', handleAddClicked);
-      $('#cancel-button').on('click', handleCancelClick);
-      $("form").submit(preventFormSubmit)
-      $('#itemType').on('change', switchForm)
-      $('#accountFrom').on('change', switchAccount)
-      $('#accountTo').on('change', switchAccount)
-      $('#dateCol').on('click', changeDate)
+   $('#add-button').on('click', handleAddClicked);
+   $('#cancel-button').on('click', handleCancelClick);
+   $("form").submit(preventFormSubmit)
+   $('#itemType').on('change', switchForm)
+   $('#accountFrom').on('change', switchAccount)
+   $('#accountTo').on('change', switchAccount)
+   $('#dateCol').on('click', changeDate)
+   $('#confirmationButton').on('click', transferMoney)
 
 }
 
@@ -80,7 +83,7 @@ function addItem() {
    if ($('#itemType').val() !== "Transfer") {
       addExpenseorIncome();
    } else {
-      transferMoney();
+      checkTransferAmount();
    }
 }
 
@@ -150,10 +153,25 @@ function formatDate(date) {
    return newDate;
 }
 
+function checkTransferAmount() {
+   var account = $('#accountFrom').val();
+   var amount = $('#transferAmount').val()
+   var overdraftChecking = amount - checkingBalance
+   var overdraftSavings = amount - savingBalance
+   if (account === 'Checking' && amount > checkingBalance) {
+      $('.modal-body').text('You are going to overdraft your ' + account + ' account by $' + overdraftChecking + '. Would you like to make the transfer?')
+      $('#confirmationModal').modal('show')
+   } else if (account === 'Savings' && amount > savingBalance) {
+      $('.modal-body').text('You are going to overdraft your ' + account + ' account by $' + overdraftSavings + '. Would you like to make the transfer?')
+      $('#confirmationModal').modal('show')
+   } else {
+      transferMoney()
+   }
+}
+
 function validateItem(item) {
    var date = parseInt(item.date)
    var allVaild = true
-   console.log(item)
    if (item.type !== 'Transfer') {
       var formFields = [{
          name: item.name,
@@ -276,13 +294,13 @@ function calculateExpenses(itemsArray) {
    var savingIncome = 0;
    for (var i = 0; i < itemsArray.length; i++) {
       if (itemsArray[i].type === 'Expense') {
-         if (itemsArray[i].account === "Checkings") {
+         if (itemsArray[i].account === "Checking") {
             checkingExpense += itemsArray[i].amount
          } else {
             savingExpense += itemsArray[i].amount
          }
       } else if (itemsArray[i].type === 'Income') {
-         if (itemsArray[i].account === "Checkings") {
+         if (itemsArray[i].account === "Checking") {
             checkingIncome += itemsArray[i].amount
          } else {
             savingIncome += itemsArray[i].amount
@@ -302,9 +320,9 @@ function calculateExpenses(itemsArray) {
 }
 
 function renderBalance(checkingExpense, savingExpense, checkingIncome, savingIncome) {
-   var checkingBalance = parseFloat($('.checkings-balance').val()) - checkingExpense + checkingIncome;
-   var savingBalance = parseFloat($('.savings-balance').val()) - savingExpense + savingIncome;
-   $('.checkings-balance').text("$ " + checkingBalance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'))
+   checkingBalance = parseFloat($('.checking-balance').val()) - checkingExpense + checkingIncome;
+   savingBalance = parseFloat($('.savings-balance').val()) - savingExpense + savingIncome;
+   $('.checking-balance').text("$ " + checkingBalance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'))
    $('.savings-balance').text("$ " + savingBalance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'))
 }
 
@@ -316,7 +334,6 @@ function orderByDate(itemsArray) {
          var dateB = new Date(b.date)
          return dateA - dateB
       });
-      console.log(itemsArray)
    } else {
       itemsArray.sort(function (a, b) {
          var dateA = new Date(a.date)
