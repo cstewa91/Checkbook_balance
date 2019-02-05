@@ -16,8 +16,8 @@ function addClickHandlersToElements() {
       $('#cancel-button').on('click', handleCancelClick);
       $("form").submit(preventFormSubmit)
       $('#itemType').on('change', switchForm)
-      $('#accountFrom').on('click', switchAccount)
-      $('#accountTo').on('click', switchAccount)
+      $('#accountFrom').on('change', switchAccount)
+      $('#accountTo').on('change', switchAccount)
       $('#dateCol').on('click', changeDate)
 }
 
