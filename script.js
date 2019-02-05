@@ -21,7 +21,8 @@ function addClickHandlersToElements() {
    $('#accountFrom').on('change', switchAccount)
    $('#accountTo').on('change', switchAccount)
    $('#dateCol').on('click', changeDate)
-   $('#confirmationButton').on('click', transferMoney)
+   $('#modalYesButton').on('click', transferMoney)
+   $('#modalNoButton').on('click',clearAddItemFormInputs)
 
 }
 
@@ -158,11 +159,13 @@ function checkTransferAmount() {
    var amount = $('#transferAmount').val()
    var overdraftChecking = amount - checkingBalance
    var overdraftSavings = amount - savingBalance
+   var formatOverdraftChecking = overdraftChecking.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+   var formarOverdraftSavings = overdraftSavings.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
    if (account === 'Checking' && amount > checkingBalance) {
-      $('.modal-body').text('You are going to overdraft your ' + account + ' account by $' + overdraftChecking + '. Would you like to make the transfer?')
+      $('.modal-body').text('You are going to overdraft your ' + account + ' account by $ ' + formatOverdraftChecking + '. Would you like to make the transfer?')
       $('#confirmationModal').modal('show')
    } else if (account === 'Savings' && amount > savingBalance) {
-      $('.modal-body').text('You are going to overdraft your ' + account + ' account by $' + overdraftSavings + '. Would you like to make the transfer?')
+      $('.modal-body').text('You are going to overdraft your ' + account + ' account by $ ' + formarOverdraftSavings + '. Would you like to make the transfer?')
       $('#confirmationModal').modal('show')
    } else {
       transferMoney()
@@ -247,7 +250,7 @@ function renderItemOnDom(itemObject) {
       var itemAccount = $('<td>').append(itemObject.account)
       var deleteButton = $('<button>', {
          text: 'Delete',
-         addClass: 'btn btn-danger btn-sm',
+         addClass: 'btn btn-danger btn-sm delete-button',
          on: {
             click: function () {
                var deletePosition = itemsArray.indexOf(itemObject);
@@ -266,7 +269,7 @@ function renderItemOnDom(itemObject) {
       var itemAccount = $('<td>').append(itemObject.from)
       var deleteButton = $('<button>', {
          text: 'Delete',
-         addClass: 'btn btn-danger btn-sm',
+         addClass: 'btn btn-danger btn-sm delete-button',
          on: {
             click: function () {
                var deletePosition = itemsArray.indexOf(itemObject);
