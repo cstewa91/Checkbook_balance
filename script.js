@@ -12,13 +12,14 @@ function initializeApp() {
 }
 
 function addClickHandlersToElements() {
-   $('#add-button').on('click', handleAddClicked);
-   $('#cancel-button').on('click', handleCancelClick);
-   $("form").submit(preventFormSubmit)
-   $('#itemType').on('change', switchForm)
-   $('#accountFrom').on('click', switchAccount)
-   $('#accountTo').on('click', switchAccount)
-   $('#dateCol').on('click', changeDate)
+      $('#add-button').on('click', handleAddClicked);
+      $('#cancel-button').on('click', handleCancelClick);
+      $("form").submit(preventFormSubmit)
+      $('#itemType').on('change', switchForm)
+      $('#accountFrom').on('change', switchAccount)
+      $('#accountTo').on('change', switchAccount)
+      $('#dateCol').on('click', changeDate)
+
 }
 
 function handleAddClicked() {
