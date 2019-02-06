@@ -24,9 +24,10 @@ function addClickHandlersToElements() {
    $('#accountTo').on('change', switchAccount)
    $('#dateCol').on('click', changeDate)
    $('#modalYesButton').on('click', transferMoney)
-   $('#modalNoButton').on('click',clearAddItemFormInputs)
+   $('#modalNoButton').on('click', clearAddItemFormInputs)
 
 }
+
 
 function handleAddClicked() {
    addItem();
@@ -65,19 +66,35 @@ function switchForm() {
 function switchAccount() {
    if (this.id === 'accountFrom') {
       if ($('#accountFrom').val() === 'Checking') {
-         $('#accountFrom option:contains(Checking)').prop({ selected: true });
-         $('#accountTo option:contains(Savings)').prop({ selected: true });
+         $('#accountFrom option:contains(Checking)').prop({
+            selected: true
+         });
+         $('#accountTo option:contains(Savings)').prop({
+            selected: true
+         });
       } else {
-         $('#accountFrom option:contains(Savings)').prop({ selected: true });
-         $('#accountTo option:contains(Checking)').prop({ selected: true });
+         $('#accountFrom option:contains(Savings)').prop({
+            selected: true
+         });
+         $('#accountTo option:contains(Checking)').prop({
+            selected: true
+         });
       }
    } else {
       if ($('#accountTo').val() === 'Checking') {
-         $('#accountFrom option:contains(Savings)').prop({ selected: true });
-         $('#accountTo option:contains(Checking)').prop({ selected: true });
+         $('#accountFrom option:contains(Savings)').prop({
+            selected: true
+         });
+         $('#accountTo option:contains(Checking)').prop({
+            selected: true
+         });
       } else {
-         $('#accountFrom option:contains(Checking)').prop({ selected: true });
-         $('#accountTo option:contains(Savings)').prop({ selected: true });
+         $('#accountFrom option:contains(Checking)').prop({
+            selected: true
+         });
+         $('#accountTo option:contains(Savings)').prop({
+            selected: true
+         });
       }
    }
 }
@@ -179,23 +196,23 @@ function validateItem(item) {
    var allVaild = true
    if (item.type !== 'Transfer') {
       var formFields = [{
-         name: item.name,
-         select: 'name',
-         regex: /\S/,
-         error: 'Please enter an item'
-      },
-      {
-         name: item.amount,
-         select: 'amount',
-         regex: /\d/,
-         error: 'Please enter an amount'
-      },
-      {
-         name: date,
-         select: 'date',
-         regex: /\d/,
-         error: 'Please enter a date'
-      }
+            name: item.name,
+            select: 'name',
+            regex: /\S/,
+            error: 'Please enter an item'
+         },
+         {
+            name: item.amount,
+            select: 'amount',
+            regex: /\d/,
+            error: 'Please enter an amount'
+         },
+         {
+            name: date,
+            select: 'date',
+            regex: /\d/,
+            error: 'Please enter a date'
+         }
       ]
       for (var arrayIndex = 0; arrayIndex < formFields.length; arrayIndex++) {
          var currentField = formFields[arrayIndex];
@@ -207,17 +224,17 @@ function validateItem(item) {
       }
    } else {
       var formFields = [{
-         name: item.amount,
-         select: 'amount',
-         regex: /\d/,
-         error: 'Please enter an amount'
-      },
-      {
-         name: date,
-         select: 'date',
-         regex: /\d/,
-         error: 'Please enter a date'
-      }
+            name: item.amount,
+            select: 'amount',
+            regex: /\d/,
+            error: 'Please enter an amount'
+         },
+         {
+            name: date,
+            select: 'date',
+            regex: /\d/,
+            error: 'Please enter a date'
+         }
       ]
       for (var arrayIndex = 0; arrayIndex < formFields.length; arrayIndex++) {
          var currentField = formFields[arrayIndex];

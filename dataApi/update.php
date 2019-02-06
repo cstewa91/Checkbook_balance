@@ -1,27 +1,24 @@
 <?php
 
-//check if you have all the data you need from the client-side call.  This should include the fields being changed and the ID of the student to be changed
-//if not, add an appropriate error to errors
+require_once('../mysql_connect.php');
+if(empty($_GET['name']) || empty($_GET['grade']) || empty($_GET['course_name'])) {
+	$output['errors'][] = 'No enough data';
+}
 
-//write a query that updates the data at the given student ID.  
-// $result = null;
-//send the query to the database, store the result of the query into $result
+$deleteID = $_GET['id'];
+$query = "DELETE FROM `student_data` WHERE `id`= $deleteID ";
+$result = null;
+$result = mysqli_query($conn, $query);
 
-
-//check if $result is empty.  
-	//if it is, add 'database error' to errors
-//else: 
-	//check if the number of affected rows is 1.  Please note that if the data updated is EXCACTLY the same as the original data, it will show a result of 0
-		//if it did, change output success to true
-	//if not, add to the errors: 'update error'
-	require_once('../mysql_connect.php');
-	if($conn->connect_error) {
-		echo 'goodbye';
+if(empty($result)) {
+	$outpu['errors'][] = 'database error';
+} else {
+	if(mysqli_affected_rows($conn) == 1) {
+		$output['success'] = true;
+	} else {
+		$output['error'][] = 'delete error';
 	}
-	$query = "SELECT type FROM checkbook";
-	$result = mysqli_query($conn, $query);
-	mysqli_num_rows($result);
-	while($row = $result->fetch_assoc()) {
-		echo $row['type'];
-	}
+}
+
+
 ?>

@@ -29,13 +29,12 @@
                             0.00</span></small>
                     <small>Savings : <span class="savings-balance label label-default">$ 0.00</span></small>
                 </div>
-            </h3>
+                </h3>
         </div>
         <div class="student-add-form col-sm-3 col-sm-push-9 clearfix">
             <h4 id="expense-header">Add Expense</h4>
             <h4 id="income-header" class="hide-input">Add Income</h4>
             <h4 id="transfer-header" class="hide-input">Transfer Money</h4>
-            <form action="./dataApi/insert.php" method="post" id="itemForm" novalidate>
                 <div class="form-group input-group">
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-piggy-bank"></span>
@@ -76,11 +75,7 @@
                             <option>Savings</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-success clearfix" id='add-button'>Add</button>
-                    <button type="button" class="btn btn-default" id='cancel-button'>Cancel</button>
                 </div>
-            </form>
-            <form id='transferForm' novalidate>
                 <div id="transfer-inputs" class="hide-input">
                     <div class="form-group input-group">
                         <span class="input-group-addon less-padding">
@@ -113,10 +108,9 @@
                         </span>
                         <input type="date" class="form-control" name="dueDate" id="transferDate">
                     </div>
-                    <button type="submit" class="btn btn-success clearfix" id='transfer-add-button'>Add</button>
-                    <button type="button" class="btn btn-default" id='transfer-cancel-button'>Cancel</button>
                 </div>
-            </form>
+                <button type="submit" class="btn btn-success clearfix" id='add-button'>Add</button>
+                <button type="button" class="btn btn-default" id='cancel-button'>Cancel</button>
         </div>
 
         <div class="item-table col-sm-9 col-sm-pull-3 clearfix">
