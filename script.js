@@ -16,6 +16,8 @@ function initializeApp() {
 function addClickHandlersToElements() {
    $('#add-button').on('click', handleAddClicked);
    $('#cancel-button').on('click', handleCancelClick);
+   $('#transfer-add-button').on('click', handleAddClicked);
+   $('#transfer-cancel-button').on('click', handleCancelClick);
    $("form").submit(preventFormSubmit)
    $('#itemType').on('change', switchForm)
    $('#accountFrom').on('change', switchAccount)
@@ -35,7 +37,7 @@ function handleCancelClick() {
 }
 
 function preventFormSubmit(event) {
-   event.preventDefault()
+   // event.preventDefault()
 }
 
 function switchForm() {
@@ -98,11 +100,11 @@ function transferMoney() {
    var newDate = formatDate(transferDate)
    var transfer = {
       'type': type,
-      'from': transferFrom,
-      'to': transferTo,
+      'name': transferFrom,
       'amount': transferAmount,
       'formatAmount': renderedAmount,
       'date': newDate,
+      'account': transferTo
    }
    validateItem(transfer)
 }
@@ -263,10 +265,10 @@ function renderItemOnDom(itemObject) {
       var itemInput = $('<tr>').append(itemName, itemAmount, itemDate, itemAccount, tdDeleteButton)
       $('.tBody').append(itemInput);
    } else {
-      var itemName = $('<td>').append(itemObject.type + " to " + itemObject.to)
+      var itemName = $('<td>').append(itemObject.type + " to " + itemObject.account)
       var itemAmount = $('<td>').append(itemObject.formatAmount)
       var itemDate = $('<td>').append(itemObject.date)
-      var itemAccount = $('<td>').append(itemObject.from)
+      var itemAccount = $('<td>').append(itemObject.name)
       var deleteButton = $('<button>', {
          text: 'Delete',
          addClass: 'btn btn-danger btn-sm delete-button',

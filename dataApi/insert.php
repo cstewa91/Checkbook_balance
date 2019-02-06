@@ -4,7 +4,7 @@
 //if not, add an appropriate error to errors
 
 //write a query that inserts the data into the database.  remember that ID doesn't need to be set as it is auto incrementing
-$result = null;
+// $result = null;
 //send the query to the database, store the result of the query into $result
 
 
@@ -16,5 +16,10 @@ $result = null;
 		//get the insert ID of the row that was added
 		//add 'insertID' to $outut and set the value to the row's insert ID
 	//if not, add to the errors: 'insert error'
+
+	require_once('../mysql_connect.php');
+	print_r($_POST); 
+	// $query = "INSERT INTO checkbook (type) VALUES ('$_POST[type]')";
+	// mysqli_affected_rows($query);
 
 ?>

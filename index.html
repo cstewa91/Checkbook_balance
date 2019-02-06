@@ -35,12 +35,12 @@
             <h4 id="expense-header">Add Expense</h4>
             <h4 id="income-header" class="hide-input">Add Income</h4>
             <h4 id="transfer-header" class="hide-input">Transfer Money</h4>
-            <form id="itemForm" novalidate>
+            <form action="./dataApi/insert.php" method="post" id="itemForm" novalidate>
                 <div class="form-group input-group">
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-piggy-bank"></span>
                     </span>
-                    <select class="form-control" id="itemType">
+                    <select class="form-control" id="itemType" name="type">
                         <option value="Expense">Expense</option>
                         <option value="Income">Income</option>
                         <option value="Transfer">Transfer</option>
@@ -65,18 +65,22 @@
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
-                        <input type="date" class="form-control" name="dueDate" id="itemDate">
+                        <input type="date" class="form-control" name="date" id="itemDate">
                     </div>
                     <div class="form-group input-group">
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-credit-card"></span>
                         </span>
-                        <select class="form-control" id="account">
+                        <select class="form-control" id="account" name="account">
                             <option>Checking</option>
                             <option>Savings</option>
                         </select>
                     </div>
+                    <button type="submit" class="btn btn-success clearfix" id='add-button'>Add</button>
+                    <button type="button" class="btn btn-default" id='cancel-button'>Cancel</button>
                 </div>
+            </form>
+            <form id='transferForm' novalidate>
                 <div id="transfer-inputs" class="hide-input">
                     <div class="form-group input-group">
                         <span class="input-group-addon less-padding">
@@ -109,9 +113,9 @@
                         </span>
                         <input type="date" class="form-control" name="dueDate" id="transferDate">
                     </div>
+                    <button type="submit" class="btn btn-success clearfix" id='transfer-add-button'>Add</button>
+                    <button type="button" class="btn btn-default" id='transfer-cancel-button'>Cancel</button>
                 </div>
-                <button type="submit" class="btn btn-success clearfix" id='add-button' onclick="">Add</button>
-                <button type="button" class="btn btn-default" id='cancel-button' onclick="">Cancel</button>
             </form>
         </div>
 

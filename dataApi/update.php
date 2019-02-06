@@ -4,7 +4,7 @@
 //if not, add an appropriate error to errors
 
 //write a query that updates the data at the given student ID.  
-$result = null;
+// $result = null;
 //send the query to the database, store the result of the query into $result
 
 
@@ -14,5 +14,14 @@ $result = null;
 	//check if the number of affected rows is 1.  Please note that if the data updated is EXCACTLY the same as the original data, it will show a result of 0
 		//if it did, change output success to true
 	//if not, add to the errors: 'update error'
-
+	require_once('../mysql_connect.php');
+	if($conn->connect_error) {
+		echo 'goodbye';
+	}
+	$query = "SELECT type FROM checkbook";
+	$result = mysqli_query($conn, $query);
+	mysqli_num_rows($result);
+	while($row = $result->fetch_assoc()) {
+		echo $row['type'];
+	}
 ?>
