@@ -333,6 +333,7 @@ function updateItemList(itemsArray) {
 }
 
 function calculateExpenses(itemsArray) {
+   console.log(itemsArray)
    var checkingExpense = 0;
    var savingExpense = 0;
    var checkingIncome = 0;
@@ -351,7 +352,7 @@ function calculateExpenses(itemsArray) {
             savingIncome += itemsArray[i].amount
          }
       } else {
-         if (itemsArray[i].from === "Checking") {
+         if (itemsArray[i].account === "Checking") {
             checkingIncome -= itemsArray[i].amount;
             savingIncome += itemsArray[i].amount
          } else {
