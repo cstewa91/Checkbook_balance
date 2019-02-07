@@ -237,7 +237,7 @@ function validateItem(item) {
       }
    }
    if (allVaild) {
-      var axjaxConfig = {
+      var ajaxConfig = {
          type: 'GET',
          url: 'data.php',
          dataType: 'json',
@@ -250,13 +250,12 @@ function validateItem(item) {
             action: 'insert'
          },
          success: function (resp) {
-            console.log(resp)
             if (resp.success) {
                item.id = resp.itemID
             }
          }
       }
-      $.ajax(axjaxConfig)
+      $.ajax(ajaxConfig)
       pushItemToArray(item)
 
    }
@@ -330,7 +329,6 @@ function updateItemList(itemsArray) {
 }
 
 function calculateExpenses(itemsArray) {
-   console.log(itemsArray)
    var checkingExpense = 0;
    var savingExpense = 0;
    var checkingIncome = 0;
@@ -383,7 +381,6 @@ function orderByDate(itemsArray) {
          var dateB = new Date(b.date)
          return dateB - dateA
       });
-      console.log(itemsArray)
    }
    for (var i = 0; i < itemsArray.length; i++) {
       var itemObject = itemsArray[i]
@@ -415,11 +412,9 @@ function deleteItemFromDB(item) {
          amount: item.amount,
          date: item.date,
          account: item.account,
-         action: 'delete'
+         action: 'delete',
+
       },
-      success: function (resp) {
-         console.log(resp)
-      }
    }
    $.ajax(ajaxConfig)
 }
