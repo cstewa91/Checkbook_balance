@@ -19,7 +19,6 @@ function addClickHandlersToElements() {
    $('#cancel-button').on('click', handleCancelClick);
    $('#transfer-add-button').on('click', handleAddClicked);
    $('#transfer-cancel-button').on('click', handleCancelClick);
-   $("form").submit(preventFormSubmit)
    $('#itemType').on('change', switchForm)
    $('#accountFrom').on('change', switchAccount)
    $('#accountTo').on('change', switchAccount)
@@ -38,11 +37,8 @@ function handleCancelClick() {
    clearAddItemFormInputs();
 }
 
-function preventFormSubmit(event) {
-   event.preventDefault()
-}
-
 function switchForm() {
+   $('.error-border').removeClass('error-border');
    if ($('#itemType').val() === "Expense") {
       $('#expense-header').removeClass('hide-input')
       $('#income-header').addClass('hide-input')
@@ -226,7 +222,7 @@ function validateItem(item) {
          },
          {
             name: date,
-            select: 'formatDate',
+            select: 'date',
             regex: /\d/,
             error: 'Please enter a date'
          }
