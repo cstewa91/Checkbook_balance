@@ -8,20 +8,10 @@
    align-items: flex-end;
 }
 
-.error-text {
-   color: red;
-   line-height: 0.5;
-}
-
 .error-border {
    border: 2px solid red;
    border-radius: 4px;
 
-}
-
-.error-border:focus {
-   border: 2px solid red;
-   border-radius: 4px;
 }
 
 .form-group {
@@ -62,43 +52,165 @@
    top: 30%;
 }
 
-/* .body-container {
+.body-container {
    height: 100vh;
-   background-color: #eaf2e3;
+   background-color: #EFE8E1;
 }
 
 .main-title {
-   color: #b51734;
+   color: #7EBDC2;
 }
 
 .account-name {
-   color: #b51734;
+   color: #7EBDC2;
 }
 
 .checking-balance {
-   background-color: #b51734;
+   background-color: #38A3AA;
+   color: #F3DFA2;
 }
 
 .savings-balance {
-   background-color: #b51734;
+   background-color: #38A3AA;
+   color: #F3DFA2;
 }
 
 .table-header {
-   color: #ff985b;
+   color: #BB4430;
 }
 
 .form-input-title {
-   color: #88a7b8;
+   color: #BB4430;
 }
 
 .input-group-addon {
-   background-color: #C0C0C0;
-   color: #3A6EA5;
+   background-color: #38A3AA;
+   color: #F3DFA2;
 }
 
 .form-control {
    background-color: #EBEBEB;
-} */
+   color: #BB4430;
+}
+
+.form-control::placeholder {
+   color: rgba(187, 69, 48, 0.575);
+}
+
+.form-control:focus {
+   border-color: #BB4430;
+   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(187, 69, 48, .6);
+}
+
+.add-btn {
+   background-color: #BB4430;
+   color: #EFE8E1;
+   display: inline-block;
+   padding: 6px 12px;
+   margin-bottom: 0;
+   font-size: 14px;
+   font-weight: 400;
+   line-height: 1.42857143;
+   text-align: center;
+   white-space: nowrap;
+   vertical-align: middle;
+   cursor: pointer;
+   user-select: none;
+   background-image: none;
+   border: 1px solid transparent;
+   border-radius: 4px;
+}
+
+button:focus {
+   outline: none;
+}
+
+.clear-btn {
+   background-color: rgb(148, 148, 148);
+   color: #EFE8E1;
+   display: inline-block;
+   padding: 6px 12px;
+   margin-bottom: 0;
+   font-size: 14px;
+   font-weight: 400;
+   line-height: 1.42857143;
+   text-align: center;
+   white-space: nowrap;
+   vertical-align: middle;
+   cursor: pointer;
+   user-select: none;
+   background-image: none;
+   border: 1px solid transparent;
+   border-radius: 4px;
+}
+
+.modal-content {
+   background-color: #7EBDC2;
+}
+
+.modal-title {
+   color: #BB4430;
+   font-weight: bold;
+   font-size: 20px;
+}
+
+.modal-body {
+   color: white;
+   font-size: 17px;
+   padding: 40px;
+}
+
+.close-modal {
+   color: #F3DFA2;
+   opacity: 1;
+}
+
+.close-modal:hover {
+   color: #F3DFA2;
+   opacity: 0.5;
+}
+
+.yes-btn {
+   background-color: rgb(37, 160, 43);
+   color: #EFE8E1;
+   display: inline-block;
+   padding: 6px 12px;
+   margin-bottom: 0;
+   font-size: 14px;
+   font-weight: 400;
+   line-height: 1.42857143;
+   text-align: center;
+   white-space: nowrap;
+   vertical-align: middle;
+   cursor: pointer;
+   user-select: none;
+   background-image: none;
+   border: 1px solid transparent;
+   border-radius: 4px;
+}
+
+.no-btn {
+   background-color: #BB4430;
+   color: #EFE8E1;
+   display: inline-block;
+   padding: 6px 12px;
+   margin-bottom: 0;
+   font-size: 14px;
+   font-weight: 400;
+   line-height: 1.42857143;
+   text-align: center;
+   white-space: nowrap;
+   vertical-align: middle;
+   cursor: pointer;
+   user-select: none;
+   background-image: none;
+   border: 1px solid transparent;
+   border-radius: 4px;
+}
+
+.item-input {
+   background-color: #38A3AA;
+}
 
 @media (min-width: 290px) and (max-width: 305px) {
    .table-header {
