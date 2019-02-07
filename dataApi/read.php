@@ -2,7 +2,7 @@
 
 require_once('mysql_connect.php');
 
-$query = "SELECT * FROM `student_data`";
+$query = "SELECT * FROM `checkbook`";
 $result = null;
 
 $result = mysqli_query($conn, $query);

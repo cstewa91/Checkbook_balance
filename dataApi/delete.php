@@ -1,18 +1,17 @@
 <?php
-
-require_once('../mysql_connect.php');
-if(empty($_GET['name']) || empty($_GET['grade']) || empty($_GET['course_name'])) {
+require_once('mysql_connect.php');
+if(empty($_GET['type']) || empty($_GET['item']) || empty($_GET['amount']) || empty($_GET['date']) || empty($_GET['account'])) {
 	$output['errors'][] = 'No enough data';
 }
- 
+
 $deleteID = $_GET['id'];
-$query = "DELETE FROM `student_data` WHERE `id`= $deleteID ";
+$query = "DELETE FROM `checkbook` WHERE `id`= $deleteID ";
 $result = null;
 
 $result = mysqli_query($conn, $query);
 
 if(empty($result)) {
-	$outpu['errors'][] = 'database error';
+	$output['errors'][] = 'database error';
 } else {
 	if(mysqli_affected_rows($conn) == 1) {
 		$output['success'] = true;

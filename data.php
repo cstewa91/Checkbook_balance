@@ -5,7 +5,7 @@ define('fromData',true);
 if(empty($_GET['action'])){
 	exit('no action specified');
 }
-require_once('./mysql_connect.php');
+require_once('mysql_connect.php');
 
 
 $output = [
@@ -32,7 +32,7 @@ switch($_GET['action']){
 $outputJson = json_encode($output);
 
 
-print($outputJson);
+echo $outputJson
 
 
 

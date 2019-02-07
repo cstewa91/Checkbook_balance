@@ -1,6 +1,6 @@
 <?php
 
-require_once('../mysql_connect.php');
+require_once('mysql_connect.php');
 if(empty($_GET['name']) || empty($_GET['grade']) || empty($_GET['course_name'])) {
 	$output['errors'][] = 'No enough data';
 }
