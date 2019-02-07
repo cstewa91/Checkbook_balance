@@ -12,29 +12,30 @@
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="page-header">
-            <h1 class='visible-sm visible-md visible-lg'>
-                <medium class='pull-left'>My Checkbook</medium>
-                <div class='account-container'>
-                    <small class='checking-margin'>Checking : <span class="checking-balance label label-default">$
-                            0.00</span></small>
-                    <small>Savings : <span class="savings-balance label label-default">$ 0.00</span></small>
-                </div>
-            </h1>
-            <h4 class='visible-xs'>
-                <medium class='pull-left'>My Checkbook</medium>
-                <div class='account-container'>
-                    <small class='checking-margin'>Checking : <span class="checking-balance label label-default">$
-                            0.00</span></small>
-                    <small>Savings : <span class="savings-balance label label-default">$ 0.00</span></small>
-                </div>
-                </h3>
-        </div>
-        <div class="student-add-form col-sm-3 col-sm-push-9 clearfix">
-            <h4 id="expense-header">Add Expense</h4>
-            <h4 id="income-header" class="hide-input">Add Income</h4>
-            <h4 id="transfer-header" class="hide-input">Transfer Money</h4>
+    <div class="body-container">
+        <div class="container-fluid">
+            <div class="page-header">
+                <h1 class='visible-sm visible-md visible-lg'>
+                    <medium class='pull-left main-title'>My Checkbook</medium>
+                    <div class='account-container'>
+                        <small class='checking-margin account-name'>Checking : <span class="checking-balance label label-default">$
+                                0.00</span></small>
+                        <small class="account-name">Savings : <span class="savings-balance label label-default">$ 0.00</span></small>
+                    </div>
+                </h1>
+                <h4 class='visible-xs'>
+                    <medium class='pull-left main-title'>My Checkbook</medium>
+                    <div class='account-container'>
+                        <small class='checking-margin account-name'>Checking : <span class="checking-balance label label-default">$
+                                0.00</span></small>
+                        <small class="account-name">Savings : <span class="savings-balance label label-default">$ 0.00</span></small>
+                    </div>
+                    </h3>
+            </div>
+            <div class="student-add-form col-sm-3 col-sm-push-9 clearfix">
+                <h4 id="expense-header" class="form-input-title">Add Expense</h4>
+                <h4 id="income-header" class="hide-input form-input-title">Add Income</h4>
+                <h4 id="transfer-header" class="hide-input form-input-title">Transfer Money</h4>
                 <div class="form-group input-group">
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-piggy-bank"></span>
@@ -50,8 +51,7 @@
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-shopping-cart"></span>
                         </span>
-                        <input type="text" class="form-control" name="item" id="itemName" placeholder="Item"
-                            maxlength="25">
+                        <input type="text" class="form-control" name="item" id="itemName" placeholder="Item" maxlength="25">
                     </div>
                     <div id="amount-error" class="form-group input-group">
                         <span class="input-group-addon">
@@ -111,37 +111,38 @@
                 </div>
                 <button type="submit" class="btn btn-success clearfix" id='add-button'>Add</button>
                 <button type="button" class="btn btn-default" id='cancel-button'>Cancel</button>
-        </div>
+            </div>
 
-        <div class="item-table col-sm-9 col-sm-pull-3 clearfix">
-            <table class="table table-striped table table-hover ">
-                <thead>
-                    <tr class='table-header'>
-                        <th>Item</th>
-                        <th>Amount</th>
-                        <th id="dateCol">Date <span id="ascendingArrow" class="glyphicon glyphicon-menu-down"></span></th>
-                        <th>Account</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody class='tBody'>
-                </tbody>
-            </table>
-        </div>
-        <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalTitle">Overdraft Warning</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal" id="modalNoButton">No</button>
-                        <button type="button" class="btn btn-success" data-dismiss="modal" id="modalYesButton">Yes</button>
+            <div class="item-table col-sm-9 col-sm-pull-3 clearfix">
+                <table class="table table-striped table table-hover ">
+                    <thead>
+                        <tr class='table-header'>
+                            <th>Item</th>
+                            <th>Amount</th>
+                            <th id="dateCol">Date <span id="ascendingArrow" class="glyphicon glyphicon-menu-down"></span></th>
+                            <th>Account</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody class='tBody'>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitle">Overdraft Warning</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" id="modalNoButton">No</button>
+                            <button type="button" class="btn btn-success" data-dismiss="modal" id="modalYesButton">Yes</button>
+                        </div>
                     </div>
                 </div>
             </div>
