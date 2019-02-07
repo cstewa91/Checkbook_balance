@@ -298,7 +298,7 @@ function renderItemOnDom(itemObject) {
          }
       });
       var tdDeleteButton = $('<td>').append(deleteButton)
-      var itemInput = $('<tr>').append(itemName, itemAmount, itemDate, itemAccount, tdDeleteButton)
+      var itemInput = $('<tr>').append(itemName, itemAmount, itemDate, itemAccount, tdDeleteButton).addClass('item-input')
       $('.tBody').append(itemInput);
    } else {
       var itemName = $('<td>').append(itemObject.type + " to " + itemObject.name)
@@ -312,6 +312,7 @@ function renderItemOnDom(itemObject) {
             click: function () {
                var deletePosition = itemsArray.indexOf(itemObject);
                itemsArray.splice(deletePosition, 1);
+               deleteItemFromDB(itemObject);
                updateItemList(itemsArray);
             }
          }
@@ -406,7 +407,7 @@ function deleteItemFromDB(item) {
    var ajaxConfig = {
       type: 'GET',
       url: 'data.php',
-      dataType: 'json',
+      // dataType: 'json',
       data: {
          id: item.id,
          type: item.type,

@@ -109,8 +109,8 @@
                         <input type="date" class="form-control" name="date" id="transferDate">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success clearfix" id='add-button'>Add</button>
-                <button type="button" class="btn btn-default" id='cancel-button'>Cancel</button>
+                <button type="submit" class="add-btn clearfix" id='add-button'>Add</button>
+                <button type="button" class="clear-btn" id='cancel-button'>Cancel</button>
             </div>
 
             <div class="item-table col-sm-9 col-sm-pull-3 clearfix">
@@ -132,16 +132,16 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalTitle">Overdraft Warning</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
+                            <h5 class="modal-title" id="modalTitle">Overdraft Warning</h5>
                         </div>
                         <div class="modal-body">
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal" id="modalNoButton">No</button>
-                            <button type="button" class="btn btn-success" data-dismiss="modal" id="modalYesButton">Yes</button>
+                            <button type="button" class="yes-btn" data-dismiss="modal" id="modalYesButton">Yes</button>
+                            <button type="button" class="no-btn data-dismiss="modal" id="modalNoButton">No</button>
                         </div>
                     </div>
                 </div>
