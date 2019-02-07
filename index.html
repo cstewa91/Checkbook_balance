@@ -29,18 +29,17 @@
                             0.00</span></small>
                     <small>Savings : <span class="savings-balance label label-default">$ 0.00</span></small>
                 </div>
-            </h3>
+                </h3>
         </div>
         <div class="student-add-form col-sm-3 col-sm-push-9 clearfix">
             <h4 id="expense-header">Add Expense</h4>
             <h4 id="income-header" class="hide-input">Add Income</h4>
             <h4 id="transfer-header" class="hide-input">Transfer Money</h4>
-            <form id="itemForm" novalidate>
                 <div class="form-group input-group">
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-piggy-bank"></span>
                     </span>
-                    <select class="form-control" id="itemType">
+                    <select class="form-control" id="itemType" name="type">
                         <option value="Expense">Expense</option>
                         <option value="Income">Income</option>
                         <option value="Transfer">Transfer</option>
@@ -51,7 +50,7 @@
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-shopping-cart"></span>
                         </span>
-                        <input type="text" class="form-control" name="itemName" id="itemName" placeholder="Item"
+                        <input type="text" class="form-control" name="item" id="itemName" placeholder="Item"
                             maxlength="25">
                     </div>
                     <div id="amount-error" class="form-group input-group">
@@ -65,13 +64,13 @@
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
-                        <input type="date" class="form-control" name="dueDate" id="itemDate">
+                        <input type="date" class="form-control" name="date" id="itemDate">
                     </div>
                     <div class="form-group input-group">
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-credit-card"></span>
                         </span>
-                        <select class="form-control" id="account">
+                        <select class="form-control" id="account" name="account">
                             <option>Checking</option>
                             <option>Savings</option>
                         </select>
@@ -82,7 +81,7 @@
                         <span class="input-group-addon less-padding">
                             From
                         </span>
-                        <select class="form-control" id="accountFrom">
+                        <select class="form-control" id="accountFrom" name="account">
                             <option selected="selected" id="fromChecking">Checking</option>
                             <option id="fromSaving">Savings</option>
                         </select>
@@ -91,7 +90,7 @@
                         <span class="input-group-addon">
                             To
                         </span>
-                        <select class="form-control" id="accountTo">
+                        <select class="form-control" id="accountTo" name="item">
                             <option id="toChecking">Checking</option>
                             <option selected="selected" id="toSaving">Savings</option>
                         </select>
@@ -107,12 +106,11 @@
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
-                        <input type="date" class="form-control" name="dueDate" id="transferDate">
+                        <input type="date" class="form-control" name="date" id="transferDate">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success clearfix" id='add-button' onclick="">Add</button>
-                <button type="button" class="btn btn-default" id='cancel-button' onclick="">Cancel</button>
-            </form>
+                <button type="submit" class="btn btn-success clearfix" id='add-button'>Add</button>
+                <button type="button" class="btn btn-default" id='cancel-button'>Cancel</button>
         </div>
 
         <div class="item-table col-sm-9 col-sm-pull-3 clearfix">

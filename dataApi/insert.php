@@ -1,20 +1,27 @@
 <?php
+require_once('mysql_connect.php');
+if(empty($_GET['type']) || empty($_GET['item']) || empty($_GET['amount']) || empty($_GET['date']) || empty($_GET['account'])) {
+	$output['errors'][] = 'No enough data';
+}
 
-//check if you have all the data you need from the client-side call.  
-//if not, add an appropriate error to errors
-
-//write a query that inserts the data into the database.  remember that ID doesn't need to be set as it is auto incrementing
+$type = $_GET['type'];
+$name = $_GET['item'];
+$amount = $_GET['amount'];
+$date = $_GET['date'];
+$account = $_GET['account'];
+$query = "INSERT INTO `checkbook`(`type`, `name`, `amount`, `date`, `account`) VALUES ('$type','$name','$amount', '$date', '$account')";
 $result = null;
-//send the query to the database, store the result of the query into $result
-
-
-//check if $result is empty.  
-	//if it is, add 'database error' to errors
-//else: 
-	//check if the number of affected rows is 1
-		//if it did, change output success to true
-		//get the insert ID of the row that was added
-		//add 'insertID' to $outut and set the value to the row's insert ID
-	//if not, add to the errors: 'insert error'
+$result = mysqli_query($conn, $query);
+if(empty($result)) {
+	$output['error'][] = 'database error';
+} else {
+	if(mysqli_affected_rows($conn)>0) {
+		$output['success'] = true;
+		$itemID = mysqli_insert_id($conn);
+		$output['itemID'] = $itemID;
+	} else {
+			$output['errors'][] = 'no data';
+	}
+}
 
 ?>

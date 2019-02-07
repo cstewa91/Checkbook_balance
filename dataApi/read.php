@@ -1,18 +1,24 @@
 <?php
 
-//write a query that selects all the students from the database, all the data from each row
+require_once('mysql_connect.php');
+
+$query = "SELECT * FROM `checkbook`";
 $result = null;
-//send the query to the database, store the result of the query into $result
 
-
-//check if $result is empty.  
-	//if it is, add 'database error' to errors
-//else: 
-	//check if any data came back
+$result = mysqli_query($conn, $query);
+if(empty($result)) {
+	$output['error'][] = mysqli_error($conn);
+} else {
+	if(mysqli_num_rows($result)>0) {
+		$output['success'] = true;
 		$output['data']=[];
-		//if it did, change output success to true
-		//do a while loop to collect all the data 
-			//add each row of data to the $output['data'] array
-	//if not, add to the errors: 'no data'
+		while($row=mysqli_fetch_assoc($result)) {
+			$output['data'][] = $row;
+		}
+		
+	} else {
+		$output['error'][] = 'no data available';
+	}
+}
 
 ?>

@@ -7,6 +7,7 @@ var savingBalance = 0;
 
 function initializeApp() {
    addClickHandlersToElements();
+   getDataBase();
    if (itemsArray.length === 0) {
       $('.checking-balance').val(0)
       $('.savings-balance').val(0)
@@ -16,15 +17,18 @@ function initializeApp() {
 function addClickHandlersToElements() {
    $('#add-button').on('click', handleAddClicked);
    $('#cancel-button').on('click', handleCancelClick);
+   $('#transfer-add-button').on('click', handleAddClicked);
+   $('#transfer-cancel-button').on('click', handleCancelClick);
    $("form").submit(preventFormSubmit)
    $('#itemType').on('change', switchForm)
    $('#accountFrom').on('change', switchAccount)
    $('#accountTo').on('change', switchAccount)
    $('#dateCol').on('click', changeDate)
    $('#modalYesButton').on('click', transferMoney)
-   $('#modalNoButton').on('click',clearAddItemFormInputs)
+   $('#modalNoButton').on('click', clearAddItemFormInputs)
 
 }
+
 
 function handleAddClicked() {
    addItem();
@@ -63,19 +67,35 @@ function switchForm() {
 function switchAccount() {
    if (this.id === 'accountFrom') {
       if ($('#accountFrom').val() === 'Checking') {
-         $('#accountFrom option:contains(Checking)').prop({ selected: true });
-         $('#accountTo option:contains(Savings)').prop({ selected: true });
+         $('#accountFrom option:contains(Checking)').prop({
+            selected: true
+         });
+         $('#accountTo option:contains(Savings)').prop({
+            selected: true
+         });
       } else {
-         $('#accountFrom option:contains(Savings)').prop({ selected: true });
-         $('#accountTo option:contains(Checking)').prop({ selected: true });
+         $('#accountFrom option:contains(Savings)').prop({
+            selected: true
+         });
+         $('#accountTo option:contains(Checking)').prop({
+            selected: true
+         });
       }
    } else {
       if ($('#accountTo').val() === 'Checking') {
-         $('#accountFrom option:contains(Savings)').prop({ selected: true });
-         $('#accountTo option:contains(Checking)').prop({ selected: true });
+         $('#accountFrom option:contains(Savings)').prop({
+            selected: true
+         });
+         $('#accountTo option:contains(Checking)').prop({
+            selected: true
+         });
       } else {
-         $('#accountFrom option:contains(Checking)').prop({ selected: true });
-         $('#accountTo option:contains(Savings)').prop({ selected: true });
+         $('#accountFrom option:contains(Checking)').prop({
+            selected: true
+         });
+         $('#accountTo option:contains(Savings)').prop({
+            selected: true
+         });
       }
    }
 }
@@ -93,16 +113,13 @@ function transferMoney() {
    var transferFrom = $('#accountFrom').val();
    var transferTo = $('#accountTo').val();
    var transferAmount = parseFloat($('#transferAmount').val());
-   var renderedAmount = formatAmount(transferAmount, type)
    var transferDate = $('#transferDate').val();
-   var newDate = formatDate(transferDate)
    var transfer = {
       'type': type,
-      'from': transferFrom,
-      'to': transferTo,
+      'name': transferTo,
       'amount': transferAmount,
-      'formatAmount': renderedAmount,
-      'date': newDate,
+      'date': transferDate,
+      'account': transferFrom
    }
    validateItem(transfer)
 }
@@ -111,16 +128,13 @@ function addExpenseorIncome() {
    var name = $('#itemName').val();
    var type = $('#itemType').val();
    var itemAmount = parseFloat($('#itemAmount').val());
-   var renderedAmount = formatAmount(itemAmount, type)
    var itemDate = $('#itemDate').val();
-   var newDate = formatDate(itemDate)
    var account = $('#account').val();
    var item = {
       'type': type,
       'name': name,
       'amount': itemAmount,
-      'formatAmount': renderedAmount,
-      'date': newDate,
+      'date': itemDate,
       'account': account,
    }
    validateItem(item)
@@ -177,23 +191,23 @@ function validateItem(item) {
    var allVaild = true
    if (item.type !== 'Transfer') {
       var formFields = [{
-         name: item.name,
-         select: 'name',
-         regex: /\S/,
-         error: 'Please enter an item'
-      },
-      {
-         name: item.amount,
-         select: 'amount',
-         regex: /\d/,
-         error: 'Please enter an amount'
-      },
-      {
-         name: date,
-         select: 'date',
-         regex: /\d/,
-         error: 'Please enter a date'
-      }
+            name: item.name,
+            select: 'name',
+            regex: /\S/,
+            error: 'Please enter an item'
+         },
+         {
+            name: item.amount,
+            select: 'amount',
+            regex: /\d/,
+            error: 'Please enter an amount'
+         },
+         {
+            name: date,
+            select: 'date',
+            regex: /\d/,
+            error: 'Please enter a date'
+         }
       ]
       for (var arrayIndex = 0; arrayIndex < formFields.length; arrayIndex++) {
          var currentField = formFields[arrayIndex];
@@ -205,17 +219,17 @@ function validateItem(item) {
       }
    } else {
       var formFields = [{
-         name: item.amount,
-         select: 'amount',
-         regex: /\d/,
-         error: 'Please enter an amount'
-      },
-      {
-         name: date,
-         select: 'date',
-         regex: /\d/,
-         error: 'Please enter a date'
-      }
+            name: item.amount,
+            select: 'amount',
+            regex: /\d/,
+            error: 'Please enter an amount'
+         },
+         {
+            name: date,
+            select: 'formatDate',
+            regex: /\d/,
+            error: 'Please enter a date'
+         }
       ]
       for (var arrayIndex = 0; arrayIndex < formFields.length; arrayIndex++) {
          var currentField = formFields[arrayIndex];
@@ -227,10 +241,37 @@ function validateItem(item) {
       }
    }
    if (allVaild) {
-      itemsArray.push(item)
-      updateItemList(itemsArray);
-      clearAddItemFormInputs();
+      var axjaxConfig = {
+         type: 'GET',
+         url: 'data.php',
+         dataType: 'json',
+         data: {
+            type: item.type,
+            item: item.name,
+            amount: item.amount,
+            date: item.date,
+            account: item.account,
+            action: 'insert'
+         },
+         success: function (resp) {
+            console.log(resp)
+            if (resp.success) {
+               item.id = resp.itemID
+            }
+         }
+      }
+      $.ajax(axjaxConfig)
+      pushItemToArray(item)
+
    }
+}
+
+function pushItemToArray(item) {
+   item.formatAmount = formatAmount(item.amount, item.type);
+   item.formatDate = formatDate(item.date)
+   itemsArray.push(item)
+   updateItemList(itemsArray);
+   clearAddItemFormInputs();
 }
 
 
@@ -246,7 +287,7 @@ function renderItemOnDom(itemObject) {
    if (itemObject.type !== 'Transfer') {
       var itemName = $('<td>').append(itemObject.name)
       var itemAmount = $('<td>').append(itemObject.formatAmount)
-      var itemDate = $('<td>').append(itemObject.date)
+      var itemDate = $('<td>').append(itemObject.formatDate)
       var itemAccount = $('<td>').append(itemObject.account)
       var deleteButton = $('<button>', {
          text: 'Delete',
@@ -255,6 +296,7 @@ function renderItemOnDom(itemObject) {
             click: function () {
                var deletePosition = itemsArray.indexOf(itemObject);
                itemsArray.splice(deletePosition, 1);
+               deleteItemFromDB(itemObject);
                updateItemList(itemsArray);
             }
          }
@@ -263,10 +305,10 @@ function renderItemOnDom(itemObject) {
       var itemInput = $('<tr>').append(itemName, itemAmount, itemDate, itemAccount, tdDeleteButton)
       $('.tBody').append(itemInput);
    } else {
-      var itemName = $('<td>').append(itemObject.type + " to " + itemObject.to)
+      var itemName = $('<td>').append(itemObject.type + " to " + itemObject.name)
       var itemAmount = $('<td>').append(itemObject.formatAmount)
-      var itemDate = $('<td>').append(itemObject.date)
-      var itemAccount = $('<td>').append(itemObject.from)
+      var itemDate = $('<td>').append(itemObject.formatDate)
+      var itemAccount = $('<td>').append(itemObject.account)
       var deleteButton = $('<button>', {
          text: 'Delete',
          addClass: 'btn btn-danger btn-sm delete-button',
@@ -361,4 +403,45 @@ function changeDate() {
       ascending.removeClass('rotate-arrow')
    }
    orderByDate(itemsArray);
+}
+
+function deleteItemFromDB(item) {
+   var ajaxConfig = {
+      type: 'GET',
+      url: 'data.php',
+      dataType: 'json',
+      data: {
+         id: item.id,
+         type: item.type,
+         item: item.name,
+         amount: item.amount,
+         date: item.date,
+         account: item.account,
+         action: 'delete'
+      },
+      success: function (resp) {
+         console.log(resp)
+      }
+   }
+   $.ajax(ajaxConfig)
+}
+
+function getDataBase() {
+   var ajaxConfig = {
+      type: 'GET',
+      url: 'data.php',
+      dataType: 'json',
+      data: {
+         action: 'readAll'
+      },
+      success: function (resp) {
+         if (resp.success === true) {
+            for (var index = 0; index < resp.data.length; index++) {
+               resp.data[index].amount = parseFloat(resp.data[index].amount)
+               pushItemToArray(resp.data[index])
+            }
+         } 
+      }
+   }
+   $.ajax(ajaxConfig)
 }
