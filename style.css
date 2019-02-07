@@ -212,6 +212,12 @@ button:focus {
    background-color: #38A3AA;
 }
 
+#itemDate {
+   min-width: 100%;
+   width: 1px;
+}
+
+
 @media (min-width: 290px) and (max-width: 305px) {
    .table-header {
       font-size: 10px;
