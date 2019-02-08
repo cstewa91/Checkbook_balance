@@ -58,11 +58,11 @@
 }
 
 .main-title {
-   color: #7EBDC2;
+   color: rgb(104, 186, 192);
 }
 
 .account-name {
-   color: #7EBDC2;
+   color: rgb(104, 186, 192);
 }
 
 .checking-balance {
@@ -209,12 +209,19 @@ button:focus {
 }
 
 .item-input {
-   background-color: #38A3AA;
+   background-color: rgba(56, 162, 170, 0.418);
 }
 
 #itemDate {
    min-width: 100%;
    width: 1px;
+}
+
+.table>tbody>tr>td:nth-child(1),
+.table>tbody>tr>td:nth-child(2),
+.table>tbody>tr>td:nth-child(3),
+.table>tbody>tr>td:nth-child(4) {
+   padding: 12px 8px 8px 8px;
 }
 
 
