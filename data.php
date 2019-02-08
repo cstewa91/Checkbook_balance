@@ -23,9 +23,6 @@ switch($_GET['action']){
 	case 'delete':
 		include 'dataApi/delete.php';
 		break;
-	case 'update':
-		include 'dataApi/update.php';
-		break;
 }
 
 

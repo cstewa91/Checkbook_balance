@@ -317,7 +317,7 @@ function renderItemOnDom(itemObject) {
          }
       });
       var tdDeleteButton = $('<td>').append(deleteButton)
-      var itemInput = $('<tr>').append(itemName, itemAmount, itemDate, itemAccount, tdDeleteButton)
+      var itemInput = $('<tr>').append(itemName, itemAmount, itemDate, itemAccount, tdDeleteButton).addClass('item-input')
       $('.tBody').append(itemInput);
    }
 }
