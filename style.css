@@ -217,6 +217,10 @@ button:focus {
    width: 1px;
 }
 
+table {
+   table-layout: fixed;
+}
+
 .table>tbody>tr>td:nth-child(1),
 .table>tbody>tr>td:nth-child(2),
 .table>tbody>tr>td:nth-child(3),
