@@ -28,9 +28,7 @@ function addClickHandlersToElements() {
    $('#modalNoButton').on('click', clearAddItemFormInputs)
    $('#checking-filter').on('click', filterAccount);
    $('#savings-filter').on('click', filterAccount);
-   // $('#deleteYesButton').on('click', function() {
-   //    verifiyDelete(arrayPosition)
-   // })
+   $('#deleteModal').modal('show')
 }
 
 
@@ -330,7 +328,6 @@ function renderItemOnDom(itemObject) {
             addClass: 'btn btn-danger btn-sm delete-button',
             on: {
                click: function () {
-                  $('#deleteModal').modal('show')
                   var deletePosition = itemsArray.indexOf(itemObject);
                   var deleteOther = itemsArray[deletePosition + 1]
                   $('#deleteYesButton').on('click', function () {
