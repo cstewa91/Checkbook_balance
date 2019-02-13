@@ -328,9 +328,11 @@ function renderItemOnDom(itemObject) {
                click: function () {
                   $('#deleteModal').modal('show')
                   var deletePosition = itemsArray.indexOf(itemObject);
+                  var deleteOther = itemsArray[deletePosition - 1]
                   $('#deleteYesButton').on('click', function () {
                      itemsArray.splice(deletePosition, 2);
                      deleteItemFromDB(itemObject);
+                     deleteItemFromDB(deleteOther);
                      updateItemList(itemsArray);
                   })
                }
@@ -346,9 +348,11 @@ function renderItemOnDom(itemObject) {
                click: function () {
                   $('#deleteModal').modal('show')
                   var deletePosition = itemsArray.indexOf(itemObject);
+                  var deleteOther = itemsArray[deletePosition - 1]
                   $('#deleteYesButton').on('click', function () {
                      itemsArray.splice(deletePosition - 1, 2);
                      deleteItemFromDB(itemObject);
+                     deleteItemFromDB(deleteOther);
                      updateItemList(itemsArray);
                   })
                }
