@@ -6,6 +6,7 @@ var checkingBalance = 0;
 var savingBalance = 0;
 
 function initializeApp() {
+   $('#introModal').modal('show')
    addClickHandlersToElements();
    getDataBase();
    if (itemsArray.length === 0) {
@@ -25,6 +26,8 @@ function addClickHandlersToElements() {
    $('#dateCol').on('click', changeDate)
    $('#modalYesButton').on('click', transferMoney)
    $('#modalNoButton').on('click', clearAddItemFormInputs)
+   $('#checking-filter').on('click', filterAccount);
+   $('#savings-filter').on('click', filterAccount);
 
 }
 
@@ -112,12 +115,22 @@ function transferMoney() {
    var transferDate = $('#transferDate').val();
    var transfer = {
       'type': type,
+      'transfer': 'transfer to',
       'name': transferTo,
       'amount': transferAmount,
       'date': transferDate,
       'account': transferFrom
    }
+   var transferFrom = {
+      'type': type,
+      'transfer': 'transfer from',
+      'name': transferFrom,
+      'amount': transferAmount,
+      'date': transferDate,
+      'account': transferTo
+   }
    validateItem(transfer)
+   validateItem(transferFrom)
 }
 
 function addExpenseorIncome() {
@@ -147,7 +160,7 @@ function formatAmount(amount, type) {
       } else if (type === 'Income') {
          formattedAmount = "+" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
       } else {
-         formattedAmount = "-" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+         formattedAmount = amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
       }
    }
    return formattedAmount
@@ -172,10 +185,10 @@ function checkTransferAmount() {
    var formatOverdraftChecking = overdraftChecking.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
    var formarOverdraftSavings = overdraftSavings.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
    if (account === 'Checking' && amount > checkingBalance) {
-      $('.modal-body').text('You are going to overdraft your ' + account + ' account by $ ' + formatOverdraftChecking + '. Would you like to make the transfer?')
+      $('.transfer-body').text('You are going to overdraft your ' + account + ' account by $ ' + formatOverdraftChecking + '. Would you like to make the transfer?')
       $('#confirmationModal').modal('show')
    } else if (account === 'Savings' && amount > savingBalance) {
-      $('.modal-body').text('You are going to overdraft your ' + account + ' account by $ ' + formarOverdraftSavings + '. Would you like to make the transfer?')
+      $('.transfer-body').text('You are going to overdraft your ' + account + ' account by $ ' + formarOverdraftSavings + '. Would you like to make the transfer?')
       $('#confirmationModal').modal('show')
    } else {
       transferMoney()
@@ -289,10 +302,13 @@ function renderItemOnDom(itemObject) {
          addClass: 'btn btn-danger btn-sm delete-button',
          on: {
             click: function () {
+               $('#deleteModal').modal('show')
                var deletePosition = itemsArray.indexOf(itemObject);
-               itemsArray.splice(deletePosition, 1);
-               deleteItemFromDB(itemObject);
-               updateItemList(itemsArray);
+               $('#deleteYesButton').on('click', function () {
+                  itemsArray.splice(deletePosition, 1);
+                  deleteItemFromDB(itemObject);
+                  updateItemList(itemsArray);
+               })
             }
          }
       });
@@ -300,25 +316,70 @@ function renderItemOnDom(itemObject) {
       var itemInput = $('<tr>').append(itemName, itemAmount, itemDate, itemAccount, tdDeleteButton).addClass('item-input')
       $('.tBody').append(itemInput);
    } else {
-      var itemName = $('<td>').append(itemObject.type + " to " + itemObject.name)
-      var itemAmount = $('<td>').append(itemObject.formatAmount)
       var itemDate = $('<td>').append(itemObject.formatDate)
       var itemAccount = $('<td>').append(itemObject.account)
-      var deleteButton = $('<button>', {
-         text: 'Delete',
-         addClass: 'btn btn-danger btn-sm delete-button',
-         on: {
-            click: function () {
-               var deletePosition = itemsArray.indexOf(itemObject);
-               itemsArray.splice(deletePosition, 1);
-               deleteItemFromDB(itemObject);
-               updateItemList(itemsArray);
+      if (itemObject.transfer === "transfer to") {
+         var itemName = $('<td>').append(itemObject.type + " to " + itemObject.name)
+         var itemAmount = $('<td>').append("-" + itemObject.formatAmount)
+         var deleteButton = $('<button>', {
+            text: 'Delete',
+            addClass: 'btn btn-danger btn-sm delete-button',
+            on: {
+               click: function () {
+                  $('#deleteModal').modal('show')
+                  var deletePosition = itemsArray.indexOf(itemObject);
+                  $('#deleteYesButton').on('click', function () {
+                     itemsArray.splice(deletePosition, 2);
+                     deleteItemFromDB(itemObject);
+                     updateItemList(itemsArray);
+                  })
+               }
             }
-         }
-      });
+         });
+      } else {
+         var itemName = $('<td>').append(itemObject.type + " from " + itemObject.name)
+         var itemAmount = $('<td>').append("+" + itemObject.formatAmount)
+         var deleteButton = $('<button>', {
+            text: 'Delete',
+            addClass: 'btn btn-danger btn-sm delete-button',
+            on: {
+               click: function () {
+                  $('#deleteModal').modal('show')
+                  var deletePosition = itemsArray.indexOf(itemObject);
+                  $('#deleteYesButton').on('click', function () {
+                     itemsArray.splice(deletePosition - 1, 2);
+                     deleteItemFromDB(itemObject);
+                     updateItemList(itemsArray);
+                  })
+               }
+            }
+         });
+      }
       var tdDeleteButton = $('<td>').append(deleteButton)
       var itemInput = $('<tr>').append(itemName, itemAmount, itemDate, itemAccount, tdDeleteButton).addClass('item-input')
       $('.tBody').append(itemInput);
+
+   }
+}
+
+function filterAccount() {
+   var checkingFilter = $('#checking-filter')
+   var savingFilter = $('#savings-filter')
+   $('.tBody').empty();
+   for (var index = 0; index < itemsArray.length; index++) {
+      if (checkingFilter.is(':checked') && savingFilter.is(':checked')) {
+         renderItemOnDom(itemsArray[index])
+      } else if (checkingFilter.is(':checked') && savingFilter.not(':checked')) {
+         if (itemsArray[index].account === 'Checking') {
+            renderItemOnDom(itemsArray[index])
+         }
+      } else if (savingFilter.is(':checked') && checkingFilter.not(':checked')) {
+         if (itemsArray[index].account === 'Savings') {
+            renderItemOnDom(itemsArray[index])
+         }
+      } else {
+         $('.tBody').empty();
+      }
    }
 }
 
@@ -326,6 +387,7 @@ function renderItemOnDom(itemObject) {
 function updateItemList(itemsArray) {
    orderByDate(itemsArray)
    calculateExpenses(itemsArray);
+   console.log(itemsArray)
 }
 
 function calculateExpenses(itemsArray) {
@@ -333,6 +395,7 @@ function calculateExpenses(itemsArray) {
    var savingExpense = 0;
    var checkingIncome = 0;
    var savingIncome = 0;
+   debugger;
    for (var i = 0; i < itemsArray.length; i++) {
       if (itemsArray[i].type === 'Expense') {
          if (itemsArray[i].account === "Checking") {
@@ -347,12 +410,14 @@ function calculateExpenses(itemsArray) {
             savingIncome += itemsArray[i].amount
          }
       } else {
-         if (itemsArray[i].account === "Checking") {
-            checkingIncome -= itemsArray[i].amount;
-            savingIncome += itemsArray[i].amount
-         } else {
-            checkingIncome += itemsArray[i].amount;
-            savingIncome -= itemsArray[i].amount
+         if (itemsArray[i].transfer === "transfer to") {
+            if (itemsArray[i].account === "Checking") {
+               checkingIncome -= itemsArray[i].amount;
+               savingIncome += itemsArray[i].amount
+            } else {
+               checkingIncome += itemsArray[i].amount;
+               savingIncome -= itemsArray[i].amount
+            }
          }
       }
    }
@@ -404,7 +469,7 @@ function deleteItemFromDB(item) {
    var ajaxConfig = {
       type: 'GET',
       url: 'data.php',
-      // dataType: 'json',
+      dataType: 'json',
       data: {
          id: item.id,
          type: item.type,
@@ -433,7 +498,7 @@ function getDataBase() {
                resp.data[index].amount = parseFloat(resp.data[index].amount)
                pushItemToArray(resp.data[index])
             }
-         } 
+         }
       }
    }
    $.ajax(ajaxConfig)

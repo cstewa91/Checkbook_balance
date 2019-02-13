@@ -42,7 +42,6 @@
 
 .item-table {
    min-height: .01%;
-   overflow-x: auto;
    position: relative;
    min-height: 1px;
    padding-right: 15px;
@@ -216,6 +215,28 @@ button:focus {
 #itemDate {
    min-width: 100%;
    width: 1px;
+}
+
+.dropdown-menu {
+   padding: 5px 8px;
+}
+
+.dropdown {
+   cursor: pointer;
+}
+
+.dropdown-menu{
+   background-color: #F3DFA2;
+   cursor: default;
+}
+
+.dropdown-menu > li{
+   color: #38A3AA;
+   cursor: default;
+}
+
+.dropdown-menu > li > input{
+   cursor: pointer;
 }
 
 table {
