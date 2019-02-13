@@ -328,7 +328,7 @@ function renderItemOnDom(itemObject) {
                click: function () {
                   $('#deleteModal').modal('show')
                   var deletePosition = itemsArray.indexOf(itemObject);
-                  var deleteOther = itemsArray[deletePosition - 1]
+                  var deleteOther = itemsArray[deletePosition + 1]
                   $('#deleteYesButton').on('click', function () {
                      itemsArray.splice(deletePosition, 2);
                      deleteItemFromDB(itemObject);
@@ -399,7 +399,6 @@ function calculateExpenses(itemsArray) {
    var savingExpense = 0;
    var checkingIncome = 0;
    var savingIncome = 0;
-   debugger;
    for (var i = 0; i < itemsArray.length; i++) {
       if (itemsArray[i].type === 'Expense') {
          if (itemsArray[i].account === "Checking") {
