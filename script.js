@@ -28,8 +28,8 @@ function addClickHandlersToElements() {
    $('#modalNoButton').on('click', clearAddItemFormInputs)
    $('#checking-filter').on('click', filterAccount);
    $('#savings-filter').on('click', filterAccount);
-
 }
+
 
 
 function handleAddClicked() {
@@ -304,11 +304,9 @@ function renderItemOnDom(itemObject) {
             click: function () {
                $('#deleteModal').modal('show')
                var deletePosition = itemsArray.indexOf(itemObject);
-               $('#deleteYesButton').on('click', function () {
-                  itemsArray.splice(deletePosition, 1);
-                  deleteItemFromDB(itemObject);
-                  updateItemList(itemsArray);
-               })
+               itemsArray.splice(deletePosition, 1);
+               deleteItemFromDB(itemObject);
+               updateItemList(itemsArray);
             }
          }
       });
@@ -329,12 +327,10 @@ function renderItemOnDom(itemObject) {
                   $('#deleteModal').modal('show')
                   var deletePosition = itemsArray.indexOf(itemObject);
                   var deleteOther = itemsArray[deletePosition + 1]
-                  $('#deleteYesButton').on('click', function () {
-                     itemsArray.splice(deletePosition, 2);
-                     deleteItemFromDB(itemObject);
-                     deleteItemFromDB(deleteOther);
-                     updateItemList(itemsArray);
-                  })
+                  itemsArray.splice(deletePosition, 2);
+                  deleteItemFromDB(itemObject);
+                  deleteItemFromDB(deleteOther);
+                  updateItemList(itemsArray);
                }
             }
          });
@@ -349,12 +345,10 @@ function renderItemOnDom(itemObject) {
                   $('#deleteModal').modal('show')
                   var deletePosition = itemsArray.indexOf(itemObject);
                   var deleteOther = itemsArray[deletePosition - 1]
-                  $('#deleteYesButton').on('click', function () {
-                     itemsArray.splice(deletePosition - 1, 2);
-                     deleteItemFromDB(itemObject);
-                     deleteItemFromDB(deleteOther);
-                     updateItemList(itemsArray);
-                  })
+                  itemsArray.splice(deletePosition - 1, 2);
+                  deleteItemFromDB(itemObject);
+                  deleteItemFromDB(deleteOther);
+                  updateItemList(itemsArray);
                }
             }
          });
@@ -365,6 +359,7 @@ function renderItemOnDom(itemObject) {
 
    }
 }
+
 
 function filterAccount() {
    var checkingFilter = $('#checking-filter')
@@ -391,7 +386,6 @@ function filterAccount() {
 function updateItemList(itemsArray) {
    orderByDate(itemsArray)
    calculateExpenses(itemsArray);
-   console.log(itemsArray)
 }
 
 function calculateExpenses(itemsArray) {
