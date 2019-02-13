@@ -37,6 +37,7 @@
 
 #dateCol {
    cursor: pointer;
+   width: 56px;
 }
 
 .item-table {
