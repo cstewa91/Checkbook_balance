@@ -329,6 +329,7 @@ function renderItemOnDom(itemObject) {
             addClass: 'btn btn-danger btn-sm delete-button',
             on: {
                click: function () {
+                  $('#deleteYesButton').off('click')
                   var deletePosition = itemsArray.indexOf(itemObject);
                   var deleteOther = itemsArray[deletePosition + 1]
                   $('#deleteModal').modal('show')
@@ -337,7 +338,6 @@ function renderItemOnDom(itemObject) {
                      deleteItemFromDB(itemObject);
                      deleteItemFromDB(deleteOther);
                      updateItemList(itemsArray);
-                     $('#deleteYesButton').off('click')
                   })
                }
             }
@@ -350,6 +350,7 @@ function renderItemOnDom(itemObject) {
             addClass: 'btn btn-danger btn-sm delete-button',
             on: {
                click: function () {
+                  $('#deleteYesButton').off('click')
                   $('#deleteModal').modal('show')
                   var deletePosition = itemsArray.indexOf(itemObject);
                   var deleteOther = itemsArray[deletePosition - 1]
@@ -359,7 +360,6 @@ function renderItemOnDom(itemObject) {
                      deleteItemFromDB(itemObject);
                      deleteItemFromDB(deleteOther);
                      updateItemList(itemsArray);
-                     $('#deleteYesButton').off('click')
                   })
                }
             }
