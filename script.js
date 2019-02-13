@@ -28,6 +28,9 @@ function addClickHandlersToElements() {
    $('#modalNoButton').on('click', clearAddItemFormInputs)
    $('#checking-filter').on('click', filterAccount);
    $('#savings-filter').on('click', filterAccount);
+   // $('#deleteYesButton').on('click', function() {
+   //    verifiyDelete(arrayPosition)
+   // })
 }
 
 
@@ -294,7 +297,7 @@ function clearAddItemFormInputs() {
 function renderItemOnDom(itemObject) {
    if (itemObject.type !== 'Transfer') {
       var itemName = $('<td>').append(itemObject.name)
-      var itemAmount = $('<td>').append(itemObject.formatAmount)
+      var itemAmount = $('<td>').append(itemObject.formatAmount).addClass('amount-column')
       var itemDate = $('<td>').append(itemObject.formatDate)
       var itemAccount = $('<td>').append(itemObject.account)
       var deleteButton = $('<button>', {
@@ -302,11 +305,14 @@ function renderItemOnDom(itemObject) {
          addClass: 'btn btn-danger btn-sm delete-button',
          on: {
             click: function () {
-               $('#deleteModal').modal('show')
                var deletePosition = itemsArray.indexOf(itemObject);
-               itemsArray.splice(deletePosition, 1);
-               deleteItemFromDB(itemObject);
-               updateItemList(itemsArray);
+               $('#deleteModal').modal('show')
+               $('#deleteYesButton').on('click', function () {
+                  itemsArray.splice(deletePosition, 1);
+                  deleteItemFromDB(itemObject);
+                  updateItemList(itemsArray)
+                  $('#deleteYesButton').off('click')
+               })
             }
          }
       });
@@ -318,7 +324,7 @@ function renderItemOnDom(itemObject) {
       var itemAccount = $('<td>').append(itemObject.account)
       if (itemObject.transfer === "transfer to") {
          var itemName = $('<td>').append(itemObject.type + " to " + itemObject.name)
-         var itemAmount = $('<td>').append("-" + itemObject.formatAmount)
+         var itemAmount = $('<td>').append("-" + itemObject.formatAmount).addClass('amount-column')
          var deleteButton = $('<button>', {
             text: 'Delete',
             addClass: 'btn btn-danger btn-sm delete-button',
@@ -327,16 +333,19 @@ function renderItemOnDom(itemObject) {
                   $('#deleteModal').modal('show')
                   var deletePosition = itemsArray.indexOf(itemObject);
                   var deleteOther = itemsArray[deletePosition + 1]
-                  itemsArray.splice(deletePosition, 2);
-                  deleteItemFromDB(itemObject);
-                  deleteItemFromDB(deleteOther);
-                  updateItemList(itemsArray);
+                  $('#deleteYesButton').on('click', function () {
+                     itemsArray.splice(deletePosition, 2);
+                     deleteItemFromDB(itemObject);
+                     deleteItemFromDB(deleteOther);
+                     updateItemList(itemsArray);
+                     $('#deleteYesButton').off('click')
+                  })
                }
             }
          });
       } else {
          var itemName = $('<td>').append(itemObject.type + " from " + itemObject.name)
-         var itemAmount = $('<td>').append("+" + itemObject.formatAmount)
+         var itemAmount = $('<td>').append("+" + itemObject.formatAmount).addClass('amount-column')
          var deleteButton = $('<button>', {
             text: 'Delete',
             addClass: 'btn btn-danger btn-sm delete-button',
@@ -345,10 +354,13 @@ function renderItemOnDom(itemObject) {
                   $('#deleteModal').modal('show')
                   var deletePosition = itemsArray.indexOf(itemObject);
                   var deleteOther = itemsArray[deletePosition - 1]
-                  itemsArray.splice(deletePosition - 1, 2);
-                  deleteItemFromDB(itemObject);
-                  deleteItemFromDB(deleteOther);
-                  updateItemList(itemsArray);
+                  $('#deleteYesButton').on('click', function () {
+                     itemsArray.splice(deletePosition - 1, 2);
+                     deleteItemFromDB(itemObject);
+                     deleteItemFromDB(deleteOther);
+                     updateItemList(itemsArray);
+                     $('#deleteYesButton').off('click')
+                  })
                }
             }
          });

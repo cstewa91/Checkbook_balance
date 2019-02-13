@@ -55,6 +55,7 @@
 .body-container {
    height: 100vh;
    background-color: #EFE8E1;
+   overflow: scroll
 }
 
 .main-title {
@@ -225,22 +226,18 @@ button:focus {
    cursor: pointer;
 }
 
-.dropdown-menu{
+.dropdown-menu {
    background-color: #F3DFA2;
    cursor: default;
 }
 
-.dropdown-menu > li{
+.dropdown-menu>li {
    color: #38A3AA;
    cursor: default;
 }
 
-.dropdown-menu > li > input{
+.dropdown-menu>li>input {
    cursor: pointer;
-}
-
-table {
-   table-layout: fixed;
 }
 
 .table>tbody>tr>td:nth-child(1),
@@ -248,6 +245,10 @@ table {
 .table>tbody>tr>td:nth-child(3),
 .table>tbody>tr>td:nth-child(4) {
    padding: 12px 8px 8px 8px;
+}
+
+.account-dropdown {
+   width: 70px
 }
 
 
@@ -269,11 +270,19 @@ table {
    }
 }
 
-@media screen and (min-width: 767px) {
-   .table-responsive {
+@media screen and (max-width: 767px) {
+   .item-table {
       width: 100%;
       margin-bottom: 15px;
       overflow-y: hidden;
       -ms-overflow-style: -ms-autohiding-scrollbar;
+   }
+}
+
+@media screen and (max-width: 900px) {
+   .amount-column {
+      max-width: 119px;
+      overflow: auto;
+      display: inline-block;
    }
 }
