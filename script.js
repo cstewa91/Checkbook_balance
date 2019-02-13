@@ -28,7 +28,7 @@ function addClickHandlersToElements() {
    $('#modalNoButton').on('click', clearAddItemFormInputs)
    $('#checking-filter').on('click', filterAccount);
    $('#savings-filter').on('click', filterAccount);
-   $('#deleteModal').modal('show')
+
 }
 
 
@@ -303,13 +303,14 @@ function renderItemOnDom(itemObject) {
          addClass: 'btn btn-danger btn-sm delete-button',
          on: {
             click: function () {
+               $('#deleteYesButton').off('click')
                var deletePosition = itemsArray.indexOf(itemObject);
                $('#deleteModal').modal('show')
                $('#deleteYesButton').on('click', function () {
+                  console.log(event.currentTarget.id);
                   itemsArray.splice(deletePosition, 1);
                   deleteItemFromDB(itemObject);
                   updateItemList(itemsArray)
-                  $('#deleteYesButton').off('click')
                })
             }
          }
@@ -330,6 +331,7 @@ function renderItemOnDom(itemObject) {
                click: function () {
                   var deletePosition = itemsArray.indexOf(itemObject);
                   var deleteOther = itemsArray[deletePosition + 1]
+                  $('#deleteModal').modal('show')
                   $('#deleteYesButton').on('click', function () {
                      itemsArray.splice(deletePosition, 2);
                      deleteItemFromDB(itemObject);
@@ -351,6 +353,7 @@ function renderItemOnDom(itemObject) {
                   $('#deleteModal').modal('show')
                   var deletePosition = itemsArray.indexOf(itemObject);
                   var deleteOther = itemsArray[deletePosition - 1]
+                  $('#deleteModal').modal('show')
                   $('#deleteYesButton').on('click', function () {
                      itemsArray.splice(deletePosition - 1, 2);
                      deleteItemFromDB(itemObject);
