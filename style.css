@@ -38,8 +38,6 @@
 #dateCol {
    cursor: pointer;
    width: 56px;
-   min-width: 100%;
-   width: 1px;
 }
 
 .item-table {
