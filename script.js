@@ -442,6 +442,8 @@ function renderBalance(checkingExpense, savingExpense, checkingIncome, savingInc
 }
 
 function orderByDate(itemsArray) {
+   var checkingFilter = $('#checking-filter')
+   var savingFilter = $('#savings-filter')
    $('.tBody').empty();
    if (dateAscending === true) {
       itemsArray.sort(function (a, b) {
@@ -456,9 +458,20 @@ function orderByDate(itemsArray) {
          return dateB - dateA
       });
    }
-   for (var i = 0; i < itemsArray.length; i++) {
-      var itemObject = itemsArray[i]
-      renderItemOnDom(itemObject);
+   for (var index = 0; index < itemsArray.length; index++) {
+      if (checkingFilter.is(':checked') && savingFilter.is(':checked')) {
+         renderItemOnDom(itemsArray[index])
+      } else if (checkingFilter.is(':checked') && savingFilter.not(':checked')) {
+         if (itemsArray[index].account === 'Checking') {
+            renderItemOnDom(itemsArray[index])
+         }
+      } else if (savingFilter.is(':checked') && checkingFilter.not(':checked')) {
+         if (itemsArray[index].account === 'Savings') {
+            renderItemOnDom(itemsArray[index])
+         }
+      } else {
+         return;
+      }
    }
 }
 
