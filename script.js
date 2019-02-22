@@ -333,8 +333,7 @@ function renderItemOnDom(itemObject) {
                   var deleteOther = itemsArray[deletePosition + 1]
                   $('#deleteModal').modal('show')
                   $('#deleteYesButton').on('click', function () {
-                     deleteItemFromDB(itemObject, deletePosition);
-                     deleteItemFromDB(deleteOther);
+                     deleteItemFromDB(itemObject, deletePosition, deleteOther);
                   })
                }
             }
@@ -353,8 +352,7 @@ function renderItemOnDom(itemObject) {
                   var deleteOther = itemsArray[deletePosition - 1]
                   $('#deleteModal').modal('show')
                   $('#deleteYesButton').on('click', function () {
-                     deleteItemFromDB(itemObject, deletePosition);
-                     deleteItemFromDB(deleteOther);
+                     deleteItemFromDB(itemObject, deletePosition, deleteOther);
                   })
                }
             }
@@ -482,7 +480,7 @@ function changeDate() {
    orderByDate(itemsArray);
 }
 
-function deleteItemFromDB(item, position) {
+function deleteItemFromDB(item, position, transfer) {
    var ajaxConfig = {
       type: 'GET',
       url: 'data.php',
@@ -498,6 +496,7 @@ function deleteItemFromDB(item, position) {
 
       },
       success: function () {
+         console.log(item)
          if (item.type !== 'Transfer') {
             itemsArray.splice(position, 1);
             updateItemList(itemsArray)
@@ -512,8 +511,26 @@ function deleteItemFromDB(item, position) {
          }
       },
       error: function () {
+         $('#deleteYesButton').off('click')
          $('#connectionModal').modal('show')
       }
+   }
+   if(item.type === 'Transfer') {
+      var ajaxTransferConfig = {
+         type: 'GET',
+         url: 'data.php',
+         dataType: 'json',
+         data: {
+            id: transfer.id,
+            type: transfer.type,
+            item: transfer.name,
+            amount: transfer.amount,
+            date: transfer.date,
+            account: transfer.account,
+            action: 'delete',
+         }
+      }
+      $.ajax(ajaxTransferConfig)
    }
    $.ajax(ajaxConfig)
 }
