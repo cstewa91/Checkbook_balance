@@ -119,12 +119,12 @@
                 <table class="table table-striped">
                     <thead>
                         <tr class='table-header'>
-                            <th>Item</th>
-                            <th>Amount</th>
-                            <th>
+                            <th class="item-header">Item</th>
+                            <th class="amount-header">Amount</th>
+                            <th class="date-header">
                                 <div id="dateCol">Date <span id="ascendingArrow" class="glyphicon glyphicon-menu-down"></span></div>
                             </th>
-                            <th>
+                            <th class="account-header">
                                 <div class="dropdown account-dropdown">
                                     <div type="button" data-toggle="dropdown">Account
                                         <span class="caret"></span></div>
@@ -134,7 +134,7 @@
                                     </ul>
                                 </div>
                             </th>
-                            <th>Delete</th>
+                            <th class="delete-header">Delete</th>
                         </tr>
                     </thead>
                     <tbody class='tBody'>
@@ -159,7 +159,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true" >
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -180,24 +180,24 @@
             </div>
         </div>
         <div class="modal fade" id="introModal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h5 class="modal-title" id="modalTitle">Warning</h5>
-                        </div>
-                        <div class="modal-body">
-                            This website is for demo purposes only. Please do not enter any personal information. 
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="yes-btn" data-dismiss="modal" id="deleteYesButton">Okay</button>
-                        </div>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h5 class="modal-title" id="modalTitle">Warning</h5>
+                    </div>
+                    <div class="modal-body">
+                        This website is for demo purposes only. Please do not enter any personal information.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="yes-btn" data-dismiss="modal" id="deleteYesButton">Okay</button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </body>
 
 </html>

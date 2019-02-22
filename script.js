@@ -266,12 +266,14 @@ function validateItem(item) {
          success: function (resp) {
             if (resp.success) {
                item.id = resp.itemID
+               pushItemToArray(item)
             }
+         },
+         error: function(resp) {
+            console.log('Failed')
          }
       }
       $.ajax(ajaxConfig)
-      pushItemToArray(item)
-
    }
 }
 
@@ -294,7 +296,7 @@ function clearAddItemFormInputs() {
 
 function renderItemOnDom(itemObject) {
    if (itemObject.type !== 'Transfer') {
-      var itemName = $('<td>').append(itemObject.name)
+      var itemName = $('<td>').append(itemObject.name).addClass('item-column ')
       var itemAmount = $('<td>').append(itemObject.formatAmount).addClass('amount-column')
       var itemDate = $('<td>').append(itemObject.formatDate)
       var itemAccount = $('<td>').append(itemObject.account)
@@ -307,7 +309,6 @@ function renderItemOnDom(itemObject) {
                var deletePosition = itemsArray.indexOf(itemObject);
                $('#deleteModal').modal('show')
                $('#deleteYesButton').on('click', function () {
-                  console.log(event.currentTarget.id);
                   itemsArray.splice(deletePosition, 1);
                   deleteItemFromDB(itemObject);
                   updateItemList(itemsArray)
