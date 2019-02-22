@@ -269,8 +269,8 @@ function validateItem(item) {
                pushItemToArray(item)
             }
          },
-         error: function(resp) {
-            console.log('Failed')
+         error: function (resp) {
+            $('#connectionModal').modal('show')
          }
       }
       $.ajax(ajaxConfig)
@@ -310,7 +310,6 @@ function renderItemOnDom(itemObject) {
                $('#deleteModal').modal('show')
                $('#deleteYesButton').on('click', function () {
                   deleteItemFromDB(itemObject, deletePosition);
-                  updateItemList(itemsArray)
                })
             }
          }
@@ -334,10 +333,8 @@ function renderItemOnDom(itemObject) {
                   var deleteOther = itemsArray[deletePosition + 1]
                   $('#deleteModal').modal('show')
                   $('#deleteYesButton').on('click', function () {
-                     itemsArray.splice(deletePosition, 2);
-                     deleteItemFromDB(itemObject);
+                     deleteItemFromDB(itemObject, deletePosition);
                      deleteItemFromDB(deleteOther);
-                     updateItemList(itemsArray);
                   })
                }
             }
@@ -356,10 +353,8 @@ function renderItemOnDom(itemObject) {
                   var deleteOther = itemsArray[deletePosition - 1]
                   $('#deleteModal').modal('show')
                   $('#deleteYesButton').on('click', function () {
-                     itemsArray.splice(deletePosition - 1, 2);
-                     deleteItemFromDB(itemObject);
+                     deleteItemFromDB(itemObject, deletePosition);
                      deleteItemFromDB(deleteOther);
-                     updateItemList(itemsArray);
                   })
                }
             }
@@ -502,11 +497,22 @@ function deleteItemFromDB(item, position) {
          action: 'delete',
 
       },
-      success: function(resp) {
-         itemsArray.splice(position, 1);
+      success: function () {
+         if (item.type !== 'Transfer') {
+            itemsArray.splice(position, 1);
+            updateItemList(itemsArray)
+         } else {
+            if (item.transfer === "transfer to") {
+               itemsArray.splice(position, 2);
+               updateItemList(itemsArray)
+            } else {
+               itemsArray.splice(position - 1, 2);
+               updateItemList(itemsArray)
+            }
+         }
       },
-      error: function(resp) {
-         
+      error: function () {
+         $('#connectionModal').modal('show')
       }
    }
    $.ajax(ajaxConfig)
