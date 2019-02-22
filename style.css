@@ -251,6 +251,16 @@ button:focus {
    width: 70px
 }
 
+.amount-column {
+   max-width: 125px;
+   overflow: auto;
+   display: inline-block;
+}
+
+table {
+   table-layout: fixed;
+}
+
 
 @media (min-width: 290px) and (max-width: 305px) {
    .table-header {
@@ -277,12 +287,20 @@ button:focus {
       overflow-y: hidden;
       -ms-overflow-style: -ms-autohiding-scrollbar;
    }
+
+   .date-header, .delete-header, .account-header, .amount-header, .item-header {
+      width: 95px;
+   }
+
+   .amount-column {
+      max-width: 87px;
+   }
 }
 
-@media screen and (max-width: 900px) {
-   .amount-column {
+@media screen and (max-width: 1240px) {
+   .item-column {
       max-width: 119px;
       overflow: auto;
-      display: inline-block;
+      white-space: nowrap;
    }
 }
