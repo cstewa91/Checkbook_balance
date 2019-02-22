@@ -309,8 +309,7 @@ function renderItemOnDom(itemObject) {
                var deletePosition = itemsArray.indexOf(itemObject);
                $('#deleteModal').modal('show')
                $('#deleteYesButton').on('click', function () {
-                  itemsArray.splice(deletePosition, 1);
-                  deleteItemFromDB(itemObject);
+                  deleteItemFromDB(itemObject, deletePosition);
                   updateItemList(itemsArray)
                })
             }
@@ -488,7 +487,7 @@ function changeDate() {
    orderByDate(itemsArray);
 }
 
-function deleteItemFromDB(item) {
+function deleteItemFromDB(item, position) {
    var ajaxConfig = {
       type: 'GET',
       url: 'data.php',
@@ -503,6 +502,12 @@ function deleteItemFromDB(item) {
          action: 'delete',
 
       },
+      success: function(resp) {
+         itemsArray.splice(position, 1);
+      },
+      error: function(resp) {
+         
+      }
    }
    $.ajax(ajaxConfig)
 }
