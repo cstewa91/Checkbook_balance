@@ -9,7 +9,6 @@ $query = "DELETE FROM `checkbook` WHERE `id`= $deleteID ";
 $result = null;
 
 $result = mysqli_query($conn, $query);
-print($result);
 
 if(empty($result)) {
 	$output['errors'][] = 'database error';
